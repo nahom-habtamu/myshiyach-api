@@ -44,7 +44,6 @@ const patchUserById = async (id, user) => {
     return patchedUser;
 }
 
-
 const createUser = async (user) => {
     const userToCreate = new User({
         ...user

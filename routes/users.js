@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const usersInteractor = require('../interactors/UsersInteractor');
-const mapRequestBodyToUserObject = require('../utils/mapRequestBodyToUserObject');
-
+const usersRepo = require('../repositories/UsersRepository');
+const { mapRequestToUser } = require('../utils/requestMapper');
 
 router.get('/', async (req, res) => {
     try {
-        let users = await usersInteractor.getAllUsers();
+        let users = await usersRepo.getAllUsers();
         res.status(200).send(users);
     }
     catch (error) {
@@ -18,7 +17,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
-        let user = await usersInteractor.getUserById(userId);
+        let user = await usersRepo.getUserById(userId);
         res.status(200).send(user);
     }
     catch (error) {
@@ -28,8 +27,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        let user = mapRequestBodyToUserObject(req.body);
-        let userCreated = await usersInteractor.createUser(user);
+        let user = mapRequestToUser(req.body);
+        let userCreated = await usersRepo.createUser(user);
         res.status(201).send(userCreated);
     }
     catch (error) {
@@ -41,7 +40,7 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
-        await usersInteractor.deleteUserById(userId);
+        await usersRepo.deleteUserById(userId);
         res.status(202).send({ userId });
     }
     catch (error) {
@@ -52,8 +51,8 @@ router.delete('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
-        let user = mapRequestBodyToUserObject(req.body);
-        let updatedUser = await usersInteractor.updateUserById(userId, user);
+        let user = mapRequestToUser(req.body);
+        let updatedUser = await usersRepo.updateUserById(userId, user);
         res.status(202).send(updatedUser);
     }
     catch (error) {
@@ -64,8 +63,8 @@ router.put('/:id', async (req, res) => {
 router.patch('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
-        let user = mapRequestBodyToUserObject(req.body);
-        let patchedUser = await usersInteractor.patchUserById(userId, user);
+        let user = mapRequestToUser(req.body);
+        let patchedUser = await usersRepo.patchUserById(userId, user);
         res.status(202).send(patchedUser);
     }
     catch (error) {

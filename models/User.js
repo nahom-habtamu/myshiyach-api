@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-
+const mongoose = require('mongoose');
 const validatePhoneNumber = require("../utils/validatePhoneNumber");
 
 const userSchema = new mongoose.Schema({
@@ -35,7 +34,6 @@ const userSchema = new mongoose.Schema({
     profilePicture: {
         type: String,
     }
-
 });
 
 
