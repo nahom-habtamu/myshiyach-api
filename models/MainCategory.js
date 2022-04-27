@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 
 const mainCategorySchema = new mongoose.Schema({
-    title : {
+    title: {
         type: String,
         maxlength: 50,
-        minlength: 5
+        minlength: 5,
+        required: [true, "Please Enter Title"]
     },
-    subCategories : {
-        type: [String]
+    subCategories: {
+        type: [String],
+        required: [true, "Please Enter Sub Categories"]
     }
 });
 

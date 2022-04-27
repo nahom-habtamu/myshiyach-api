@@ -8,7 +8,7 @@ const getAllMainCategories = async () => {
 const getMainCategoryById = async (id) => {
     let mainCategory = await MainCategory.findById(id).exec();
     if (!mainCategory) {
-        throw new Error("mainCategory Not Found")
+        throw new Error("MainCategory Not Found")
     }
     return mainCategory;
 }

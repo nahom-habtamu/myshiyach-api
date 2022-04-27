@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const usersRepo = require('../repositories/UsersRepository');
+const userRepo = require('../repositories/UsersRepository');
 const { mapRequestToUser } = require('../utils/requestMapper');
 
 router.get('/', async (req, res) => {
     try {
-        let users = await usersRepo.getAllUsers();
+        let users = await userRepo.getAllUsers();
         res.status(200).send(users);
     }
     catch (error) {
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
-        let user = await usersRepo.getUserById(userId);
+        let user = await userRepo.getUserById(userId);
         res.status(200).send(user);
     }
     catch (error) {
@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         let user = mapRequestToUser(req.body);
-        let userCreated = await usersRepo.createUser(user);
+        let userCreated = await userRepo.createUser(user);
         res.status(201).send(userCreated);
     }
     catch (error) {
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
-        await usersRepo.deleteUserById(userId);
+        await userRepo.deleteUserById(userId);
         res.status(202).send({ userId });
     }
     catch (error) {
@@ -52,7 +52,7 @@ router.put('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
         let user = mapRequestToUser(req.body);
-        let updatedUser = await usersRepo.updateUserById(userId, user);
+        let updatedUser = await userRepo.updateUserById(userId, user);
         res.status(202).send(updatedUser);
     }
     catch (error) {
@@ -64,7 +64,7 @@ router.patch('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
         let user = mapRequestToUser(req.body);
-        let patchedUser = await usersRepo.patchUserById(userId, user);
+        let patchedUser = await userRepo.patchUserById(userId, user);
         res.status(202).send(patchedUser);
     }
     catch (error) {
