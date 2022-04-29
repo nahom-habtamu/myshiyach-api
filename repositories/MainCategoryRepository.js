@@ -14,7 +14,7 @@ const getMainCategoryById = async (id) => {
 }
 
 const deleteMainCategoryById = async (id) => {
-    let deletedMainCategory = 
+    let deletedMainCategory =
         await MainCategory.findByIdAndRemove(id).exec();
     if (!deletedMainCategory) {
         throw new Error("MainCategory Not Found")
@@ -23,10 +23,12 @@ const deleteMainCategoryById = async (id) => {
 }
 
 const updateMainCategoryById = async (id, mainCategory) => {
+    console.log(mainCategory);
     const updatedMainCategory = await MainCategory.findByIdAndUpdate(
         id, mainCategory,
         { new: true }
     ).exec();
+    console.log(updatedMainCategory);
     return updatedMainCategory;
 }
 
@@ -35,7 +37,7 @@ const patchMainCategoryById = async (id, mainCategory) => {
     const patchedMainCategory = await MainCategory.findByIdAndUpdate(
         id, {
         title: mainCategory.title ?? mainCategoryInDb.title,
-        subCategories: mainCategory.subCategories 
+        subCategories: mainCategory.subCategories
             ?? mainCategoryInDb.subCategories,
     },
         { new: true }

@@ -6,7 +6,7 @@ const { mapRequestToMainCategory } = require('../utils/requestMapper');
 
 router.get('/', async (req, res) => {
     try {
-        let mainCategories = 
+        let mainCategories =
             await mainCategoryRepo.getAllMainCategories();
         res.status(200).send(mainCategories);
     }
@@ -18,10 +18,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         let mainCategoryId = req.params.id;
-        let mainCategory = 
+        let mainCategory =
             await mainCategoryRepo.getMainCategoryById(mainCategoryId);
         res.status(200).send(mainCategory);
-    } 
+    }
     catch (error) {
         res.status(400).send({ error: error.message })
     }
@@ -30,13 +30,11 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         let mainCategory = mapRequestToMainCategory(req.body);
-        let createdSubCategory = 
+        let createdSubCategory =
             await mainCategoryRepo.createMainCategory(mainCategory);
-
         res.status(201).send(createdSubCategory);
     }
     catch (error) {
-        console.log(error);
         res.status(400).send({ error: error.message });
     }
 });
@@ -56,7 +54,7 @@ router.put('/:id', async (req, res) => {
     try {
         let mainCategoryId = req.params.id;
         let mainCategory = mapRequestToMainCategory(req.body);
-        let updatedMainCategory = 
+        let updatedMainCategory =
             await mainCategoryRepo.updateMainCategoryById(
                 mainCategoryId, mainCategory
             );
@@ -71,7 +69,7 @@ router.patch('/:id', async (req, res) => {
     try {
         let mainCategoryId = req.params.id;
         let mainCategory = mapRequestToMainCategory(req.body);
-        let patchedMainCategory = 
+        let patchedMainCategory =
             await mainCategoryRepo.patchMainCategoryById(
                 mainCategoryId, mainCategory
             );
