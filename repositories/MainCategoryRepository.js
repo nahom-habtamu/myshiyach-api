@@ -23,12 +23,10 @@ const deleteMainCategoryById = async (id) => {
 }
 
 const updateMainCategoryById = async (id, mainCategory) => {
-    console.log(mainCategory);
     const updatedMainCategory = await MainCategory.findByIdAndUpdate(
         id, mainCategory,
         { new: true }
     ).exec();
-    console.log(updatedMainCategory);
     return updatedMainCategory;
 }
 

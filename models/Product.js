@@ -25,6 +25,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, "Enter Brand Of Product"]
     },
+    other : {}
 });
 
 const Product = new mongoose.model('Product', productSchema);

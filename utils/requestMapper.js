@@ -28,8 +28,24 @@ const mapRequestToAdmin = (requestBody) => {
 }
 
 
+const mapRequestToProduct = (requestBody) => {
+    let product = {
+        title : requestBody.title,
+        description : requestBody.description,
+        price : requestBody.price,
+        mainCategory : requestBody.mainCategory,
+        subCategory : requestBody.subCategory,
+        brand : requestBody.brand,
+        other : requestBody.other === 
+            undefined ? undefined : { ...requestBody.other },
+    };
+    return product;
+}
+
+
 module.exports = {
     mapRequestToUser,
     mapRequestToMainCategory,
-    mapRequestToAdmin
+    mapRequestToAdmin,
+    mapRequestToProduct
 };
