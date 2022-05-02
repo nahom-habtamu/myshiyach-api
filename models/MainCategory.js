@@ -3,17 +3,19 @@ const mongoose = require('mongoose');
 const mainCategorySchema = new mongoose.Schema({
     title: {
         type: String,
+        unique: true,
         maxlength: 50,
-        minlength: 5,
+        minlength: 3,
         required: [true, "Please Enter Title"]
     },
     subCategories: {
         type: [
             {
                 title: {
-                    type: String
+                    type: String,
+                    required : true
                 },
-                additionalData: []
+                additionalData: [String]
             }
         ],
         required: [true, "Please Enter Sub Categories"]

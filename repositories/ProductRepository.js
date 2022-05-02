@@ -24,7 +24,10 @@ const deleteProductById = async (id) => {
 
 const updateProductById = async (id, product) => {
     const updatedProduct = await Product.findByIdAndUpdate(
-        id, product,
+        id, {
+            ...product,
+            other : product.other ? { ...product.other } : {} 
+        },
         { new: true }
     ).exec();
     return updatedProduct;
