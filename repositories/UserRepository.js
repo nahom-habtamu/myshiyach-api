@@ -5,6 +5,13 @@ const getAllUsers = async () => {
     return users;
 }
 
+const getUserByUsernameAndPassword = async ({ userName, password }) => {
+    let user = await User.findOne({
+        email: userName, password: password
+    });
+    return user;
+}
+
 const getUserById = async (id) => {
     let user = await User.findById(id).exec();
     if (!user) {
@@ -60,5 +67,6 @@ module.exports = {
     createUser,
     deleteUserById,
     updateUserById,
-    patchUserById
+    patchUserById,
+    getUserByUsernameAndPassword
 }

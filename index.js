@@ -8,6 +8,7 @@ const mainCategories = require('./routes/mainCategories');
 const admins = require('./routes/admins');
 const subCategories = require('./routes/subCategories');
 const products = require('./routes/products');
+const auth = require('./routes/auth');
 
 app.use(express.json());
 app.use('/api/users', users);
@@ -15,6 +16,7 @@ app.use('/api/mainCategories', mainCategories);
 app.use('/api/admins', admins);
 app.use('/api/subCategories', subCategories);
 app.use('/api/products', products);
+app.use('/api/auth', auth);
 
 const PORT = process.env.PORT ?? 5000;
 app.listen(PORT, () => {

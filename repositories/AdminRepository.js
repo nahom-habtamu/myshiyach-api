@@ -5,6 +5,13 @@ const getAllAdmins = async () => {
     return allAdmins;
 }
 
+const getAdminByUsernameAndPassword = async ({ userName, password }) => {
+    let admin = await Admin.findOne({
+        userName: userName, password: password
+    });
+    return admin;
+}
+
 const getAdminById = async (id) => {
     let admin = await Admin.findById(id).exec();
     if (!admin) {
@@ -57,5 +64,6 @@ module.exports = {
     deleteAdminById,
     updateAdminById,
     patchAdminById,
-    createAdmin
+    createAdmin,
+    getAdminByUsernameAndPassword
 }

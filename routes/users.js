@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const userRepo = require('../repositories/UsersRepository');
+const userRepo = require('../repositories/UserRepository');
 const { mapRequestToUser } = require('../utils/requestMapper');
 
 const { 
