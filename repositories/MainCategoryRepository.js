@@ -27,7 +27,6 @@ const updateMainCategoryById = async (id, mainCategory) => {
         id, mainCategory,
         { new: true }
     ).exec();
-    console.log(updatedMainCategory);
     return updatedMainCategory;
 }
 

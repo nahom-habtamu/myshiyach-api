@@ -4,6 +4,12 @@ const router = express.Router();
 const userRepo = require('../repositories/UsersRepository');
 const { mapRequestToUser } = require('../utils/requestMapper');
 
+const { 
+    createUserRequestValidationSchema,
+    putUserRequestValidationSchema,
+    patchUserRequestValidationSchema
+} = require('../validation-schemas/UserRequestValidationSchema');
+
 router.get('/', async (req, res) => {
     try {
         let users = await userRepo.getAllUsers();
@@ -28,6 +34,11 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         let user = mapRequestToUser(req.body);
+        const { error } = 
+            createUserRequestValidationSchema.validate(user);
+
+        if(error) 
+            throw error;
         let userCreated = await userRepo.createUser(user);
         res.status(201).send(userCreated);
     }
@@ -52,6 +63,9 @@ router.put('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
         let user = mapRequestToUser(req.body);
+        const { error } = putUserRequestValidationSchema.validate(user);
+        if(error)
+            throw error;            
         let updatedUser = await userRepo.updateUserById(userId, user);
         res.status(202).send(updatedUser);
     }
@@ -64,6 +78,11 @@ router.patch('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
         let user = mapRequestToUser(req.body);
+
+        const { error } = patchUserRequestValidationSchema.validate(user);
+        if(error)
+            throw error;
+
         let patchedUser = await userRepo.patchUserById(userId, user);
         res.status(202).send(patchedUser);
     }

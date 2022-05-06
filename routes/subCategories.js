@@ -4,6 +4,12 @@ const router = express.Router();
 const subCategoryRepo = require('../repositories/SubCategoryRepository');
 const { mapRequestToSubCategory } = require('../utils/requestMapper');
 
+const {
+    createSubCategoryRequestValidationSchema,
+    putSubCategoryRequestValidationSchema,
+    patchSubCategoryRequestValidationSchema
+} = require('../validation-schemas/SubCategoryRequestValidationSchema');
+
 router.get('/', async (req, res) => {
     try {
         let subCategories = await subCategoryRepo.getAllSubCategories();
@@ -17,7 +23,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         let subCategoryId = req.params.id;
-        let subCategory = 
+        let subCategory =
             await subCategoryRepo.getSubCategoryById(subCategoryId);
         res.status(200).send(subCategory);
     }
@@ -29,7 +35,11 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         let subCategory = mapRequestToSubCategory(req.body);
-        let subCategoryCreated = 
+        const { error } =
+            createSubCategoryRequestValidationSchema.validate(subCategory);
+        if (error)
+            throw error;
+        let subCategoryCreated =
             await subCategoryRepo.createSubCategory(subCategory);
         res.status(201).send(subCategoryCreated);
     }
@@ -53,6 +63,11 @@ router.put('/:id', async (req, res) => {
     try {
         let subCategoryId = req.params.id;
         let subCategory = mapRequestToSubCategory(req.body);
+
+        const { error } =
+            putSubCategoryRequestValidationSchema.validate(subCategory);
+        if (error)
+            throw error;
         let updatedSubCategory = await subCategoryRepo.updateSubCategoryById(
             subCategoryId, subCategory
         );
@@ -67,6 +82,10 @@ router.patch('/:id', async (req, res) => {
     try {
         let subCategoryId = req.params.id;
         let subCategory = mapRequestToSubCategory(req.body);
+        const { error } =
+            patchSubCategoryRequestValidationSchema.validate(subCategory);
+        if (error)
+            throw error;
         let patchedSubCategory = await subCategoryRepo.patchSubCategoryById(
             subCategoryId, subCategory
         );

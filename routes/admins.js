@@ -3,6 +3,11 @@ const router = express.Router();
 
 const adminRepo = require('../repositories/AdminRepository');
 const { mapRequestToAdmin } = require('../utils/requestMapper');
+const { 
+    createAdminRequestValidationSchema, 
+    patchAdminRequestValidationSchema,
+    putAdminRequestValidationSchema 
+} = require('../validation-schemas/AdminRequestValidationSchema');
 
 router.get('/', async (req, res) => {
     try {
@@ -28,11 +33,13 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         let admin = mapRequestToAdmin(req.body);
+        let { error } = createAdminRequestValidationSchema.validate(admin);
+        if(error) 
+            throw error;
         let adminCreated = await adminRepo.createAdmin(admin);
         res.status(201).send(adminCreated);
     }
     catch (error) {
-        console.log(error);
         res.status(400).send({ error: error.message });
     }
 });
@@ -52,6 +59,9 @@ router.put('/:id', async (req, res) => {
     try {
         let adminId = req.params.id;
         let admin = mapRequestToAdmin(req.body);
+        let { error } = putAdminRequestValidationSchema.validate(admin);
+        if(error) 
+            throw error;
         let updatedAdmin = await adminRepo.updateAdminById(adminId, admin);
         res.status(202).send(updatedAdmin);
     }
@@ -64,6 +74,9 @@ router.patch('/:id', async (req, res) => {
     try {
         let adminId = req.params.id;
         let admin = mapRequestToAdmin(req.body);
+        let { error } = patchAdminRequestValidationSchema.validate(admin);
+        if(error) 
+            throw error;
         let patchedAdmin = await adminRepo.patchAdminById(adminId, admin);
         res.status(202).send(patchedAdmin);
     }

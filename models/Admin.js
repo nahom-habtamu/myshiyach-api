@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const adminSchema = new mongoose.Schema({
     userName: {
         type: String,
+        unique: true,
         required: [true, "Please Enter Username"],
-        maxlength: 50
+        maxlength: 50,
     },
     password: {
         type: String,

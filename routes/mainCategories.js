@@ -4,6 +4,12 @@ const router = express.Router();
 const mainCategoryRepo = require('../repositories/MainCategoryRepository');
 const { mapRequestToMainCategory } = require('../utils/requestMapper');
 
+const { 
+    createMainCategoryRequestValidationSchema,
+    putMainCategoryRequestValidationSchema,
+    patchMainCategoryRequestValidationSchema
+} = require('../validation-schemas/MainCategoryRequestValidationSchema');
+
 router.get('/', async (req, res) => {
     try {
         let mainCategories =
@@ -30,6 +36,10 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         let mainCategory = mapRequestToMainCategory(req.body);
+        const { error } = 
+            createMainCategoryRequestValidationSchema.validate(mainCategory);
+        if(error)
+            throw error;
         let createdSubCategory =
             await mainCategoryRepo.createMainCategory(mainCategory);
         res.status(201).send(createdSubCategory);
@@ -54,6 +64,10 @@ router.put('/:id', async (req, res) => {
     try {
         let mainCategoryId = req.params.id;
         let mainCategory = mapRequestToMainCategory(req.body);
+        const { error } = putMainCategoryRequestValidationSchema
+            .validate(mainCategory);
+        if(error)
+            throw error;
         let updatedMainCategory =
             await mainCategoryRepo.updateMainCategoryById(
                 mainCategoryId, mainCategory
@@ -69,6 +83,10 @@ router.patch('/:id', async (req, res) => {
     try {
         let mainCategoryId = req.params.id;
         let mainCategory = mapRequestToMainCategory(req.body);
+        const { error } = patchMainCategoryRequestValidationSchema
+            .validate(mainCategory);
+        if(error)
+            throw error;
         let patchedMainCategory =
             await mainCategoryRepo.patchMainCategoryById(
                 mainCategoryId, mainCategory

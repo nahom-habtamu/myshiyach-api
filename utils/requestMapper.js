@@ -2,10 +2,11 @@ const mapRequestToUser = (requestBody) => {
     let user = {
         fullName: requestBody.fullName,
         email: requestBody.email,
-        password: requestBody.password,
         phoneNumber: requestBody.phoneNumber,
         profilePicture: requestBody.profilePicture
     }
+    if(requestBody.password)
+        user["password"] = requestBody.password;
     return user;
 };
 
@@ -19,9 +20,10 @@ const mapRequestToMainCategory = (requestBody) => {
 
 const mapRequestToAdmin = (requestBody) => {
     let admin = {
-        userName: requestBody.userName,
-        password: requestBody.password,
+        userName: requestBody.userName
     };
+    if(requestBody.password)
+        admin["password"] = requestBody.password
     return admin;
 }
 
@@ -34,9 +36,25 @@ const mapRequestToSubCategory = (requestBody) => {
 }
 
 
+const mapRequestToProduct = (requestBody) => {
+    let product = {
+        title : requestBody.title,
+        description : requestBody.description,
+        price : requestBody.price,
+        mainCategory : requestBody.mainCategory,
+        subCategory : requestBody.subCategory,
+        brand : requestBody.brand,
+        other : requestBody.other === 
+            undefined ? undefined : { ...requestBody.other },
+    };
+    return product;
+}
+
+
 module.exports = {
     mapRequestToUser,
     mapRequestToMainCategory,
     mapRequestToAdmin,
-    mapRequestToSubCategory
+    mapRequestToSubCategory,
+    mapRequestToProduct
 };
