@@ -8,14 +8,7 @@ const mainCategorySchema = new mongoose.Schema({
         required: [true, "Please Enter Title"]
     },
     subCategories: {
-        type: [
-            {
-                title: {
-                    type: String
-                },
-                additionalData: []
-            }
-        ],
+        type: [mongoose.Schema.Types.ObjectId],
         required: [true, "Please Enter Sub Categories"]
     }
 });

@@ -14,10 +14,8 @@ const mapRequestToMainCategory = (requestBody) => {
         title: requestBody.title,
         subCategories: requestBody.subCategories
     };
-
     return mainCategory;
 }
-
 
 const mapRequestToAdmin = (requestBody) => {
     let admin = {
@@ -27,9 +25,18 @@ const mapRequestToAdmin = (requestBody) => {
     return admin;
 }
 
+const mapRequestToSubCategory = (requestBody) => {
+    let subCategory = {
+        title: requestBody.title,
+        additionalData: requestBody.additionalData
+    };
+    return subCategory;
+}
+
 
 module.exports = {
     mapRequestToUser,
     mapRequestToMainCategory,
-    mapRequestToAdmin
+    mapRequestToAdmin,
+    mapRequestToSubCategory
 };
