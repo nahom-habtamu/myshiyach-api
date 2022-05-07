@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const validatePhoneNumber = require("../utils/validatePhoneNumber");
 
+const { generateAuthToken } = require('../repositories/TokenRepository');
+const ROLES = require('../constants/Roles');
+
 const userSchema = new mongoose.Schema({
 
     fullName: {
@@ -10,7 +13,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique : true,
+        unique: true,
         required: [true, "Enter Valid Email"],
         maxlength: 50,
     },
@@ -37,6 +40,12 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+userSchema.methods.generateAuthToken = function () {
+    return generateAuthToken({
+        sub: this._id,
+        role: ROLES.USER
+    });
+}
 
 const User = new mongoose.model('User', userSchema);
 

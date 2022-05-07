@@ -4,14 +4,16 @@ const router = express.Router();
 const productRepo = require('../repositories/ProductRepository');
 const { mapRequestToProduct } = require('../utils/requestMapper');
 
-const { 
+const {
     createProductRequestValidationSchema,
     patchProductRequestValidationSchema,
     putProductRequestValidationSchema
 } = require('../validation-schemas/ProductRequestValidationSchema');
 
+const auth = require('../middlewares/auth');
+const { admin, user } = require('../middlewares/role');
 
-router.get('/', async (req, res) => {
+router.get('/', [auth], async (req, res) => {
     try {
         let products = await productRepo.getAllProducts();
         res.status(200).send(products);
@@ -21,7 +23,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', [auth], async (req, res) => {
     try {
         let productId = req.params.id;
         let product = await productRepo.getProductById(productId);
@@ -32,13 +34,13 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', [auth, user], async (req, res) => {
     try {
         let product = mapRequestToProduct(req.body);
         const { error } = createProductRequestValidationSchema
             .validate(product)
-        if(error)
-            throw error;    
+        if (error)
+            throw error;
         let productCreated = await productRepo.createProduct(product);
         res.status(201).send(productCreated);
     }
@@ -47,7 +49,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth], async (req, res) => {
     try {
         let productId = req.params.id;
         await productRepo.deleteProductById(productId);
@@ -58,16 +60,16 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', [auth, user], async (req, res) => {
     try {
         let productId = req.params.id;
         let product = mapRequestToProduct(req.body);
 
         const { error } = putProductRequestValidationSchema
             .validate(product);
-        if(error)
-            throw error;    
-            
+        if (error)
+            throw error;
+
         let updatedProduct = await productRepo.updateProductById(
             productId, product
         );
@@ -78,15 +80,15 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', [auth, user], async (req, res) => {
     try {
         let productId = req.params.id;
         let product = mapRequestToProduct(req.body);
 
         const { error } = patchProductRequestValidationSchema
             .validate(product);
-        if(error)
-            throw error;   
+        if (error)
+            throw error;
 
         let patchedProduct = await productRepo.patchProductById(
             productId, product

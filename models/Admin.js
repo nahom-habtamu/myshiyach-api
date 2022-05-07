@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+const { generateAuthToken } = require('../repositories/TokenRepository');
+const ROLES = require('../constants/Roles');
+
 const adminSchema = new mongoose.Schema({
     userName: {
         type: String,
@@ -13,6 +16,14 @@ const adminSchema = new mongoose.Schema({
         maxlength: 255
     }
 });
+
+
+adminSchema.methods.generateAuthToken = function () {
+    return generateAuthToken({
+        sub: this._id,
+        role: ROLES.ADMIN
+    });
+}
 
 const Admin = new mongoose.model('Admin', adminSchema);
 

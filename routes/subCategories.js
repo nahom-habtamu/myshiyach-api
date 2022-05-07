@@ -10,7 +10,10 @@ const {
     patchSubCategoryRequestValidationSchema
 } = require('../validation-schemas/SubCategoryRequestValidationSchema');
 
-router.get('/', async (req, res) => {
+const auth = require('../middlewares/auth');
+const { admin } = require('../middlewares/role');
+
+router.get('/', [auth, admin], async (req, res) => {
     try {
         let subCategories = await subCategoryRepo.getAllSubCategories();
         res.status(200).send(subCategories);
@@ -20,7 +23,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', [auth, admin], async (req, res) => {
     try {
         let subCategoryId = req.params.id;
         let subCategory =
@@ -32,7 +35,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', [auth, admin], async (req, res) => {
     try {
         let subCategory = mapRequestToSubCategory(req.body);
         const { error } =
@@ -48,7 +51,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
     try {
         let subCategoryId = req.params.id;
         await subCategoryRepo.deleteSubCategoryById(subCategoryId);
@@ -59,7 +62,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', [auth, admin], async (req, res) => {
     try {
         let subCategoryId = req.params.id;
         let subCategory = mapRequestToSubCategory(req.body);
@@ -78,7 +81,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', [auth, admin], async (req, res) => {
     try {
         let subCategoryId = req.params.id;
         let subCategory = mapRequestToSubCategory(req.body);

@@ -9,10 +9,10 @@ const findUserAndGenerateToken = async (authRequest) => {
         throw new Error('User Not Found');
     }
     else if (user != null) {
-        return "I AM USER";
+        return user.generateAuthToken();
     }
     else {
-        return "I AM ADMIN";
+        return admin.generateAuthToken();
     }
 }
 

@@ -3,13 +3,16 @@ const router = express.Router();
 
 const adminRepo = require('../repositories/AdminRepository');
 const { mapRequestToAdmin } = require('../utils/requestMapper');
-const { 
-    createAdminRequestValidationSchema, 
+const {
+    createAdminRequestValidationSchema,
     patchAdminRequestValidationSchema,
-    putAdminRequestValidationSchema 
+    putAdminRequestValidationSchema
 } = require('../validation-schemas/AdminRequestValidationSchema');
 
-router.get('/', async (req, res) => {
+const auth = require('../middlewares/auth');
+const { admin } = require('../middlewares/role');
+
+router.get('/', [auth, admin], async (req, res) => {
     try {
         let admins = await adminRepo.getAllAdmins();
         res.status(200).send(admins);
@@ -19,9 +22,9 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/me', [auth, admin], async (req, res) => {
     try {
-        let adminId = req.params.id;
+        let adminId = req.currentUser.sub;
         let admin = await adminRepo.getAdminById(adminId);
         res.status(200).send(admin);
     }
@@ -30,11 +33,11 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', [auth, admin], async (req, res) => {
     try {
         let admin = mapRequestToAdmin(req.body);
         let { error } = createAdminRequestValidationSchema.validate(admin);
-        if(error) 
+        if (error)
             throw error;
         let adminCreated = await adminRepo.createAdmin(admin);
         res.status(201).send(adminCreated);
@@ -44,9 +47,9 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/me', [auth, admin], async (req, res) => {
     try {
-        let adminId = req.params.id;
+        let adminId = req.currentUser.sub;
         await adminRepo.deleteAdminById(adminId);
         res.status(202).send({ adminId });
     }
@@ -55,12 +58,12 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/me', [auth, admin], async (req, res) => {
     try {
-        let adminId = req.params.id;
+        let adminId = req.currentUser.sub;
         let admin = mapRequestToAdmin(req.body);
         let { error } = putAdminRequestValidationSchema.validate(admin);
-        if(error) 
+        if (error)
             throw error;
         let updatedAdmin = await adminRepo.updateAdminById(adminId, admin);
         res.status(202).send(updatedAdmin);
@@ -70,12 +73,12 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/me', [auth, admin], async (req, res) => {
     try {
-        let adminId = req.params.id;
+        let adminId = req.currentUser.sub;
         let admin = mapRequestToAdmin(req.body);
         let { error } = patchAdminRequestValidationSchema.validate(admin);
-        if(error) 
+        if (error)
             throw error;
         let patchedAdmin = await adminRepo.patchAdminById(adminId, admin);
         res.status(202).send(patchedAdmin);
