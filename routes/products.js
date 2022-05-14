@@ -11,9 +11,9 @@ const {
 } = require('../validation-schemas/ProductRequestValidationSchema');
 
 const auth = require('../middlewares/auth');
-const { admin, user } = require('../middlewares/role');
+const { user } = require('../middlewares/role');
 
-router.get('/', [auth], async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let products = await productRepo.getAllProducts();
         res.status(200).send(products);
