@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const connect = require('./utils/connectToMongo');
@@ -10,6 +11,7 @@ const subCategories = require('./routes/subCategories');
 const products = require('./routes/products');
 const auth = require('./routes/auth');
 
+app.use(cors());
 app.use(express.json());
 app.use('/api/users', users);
 app.use('/api/mainCategories', mainCategories);
