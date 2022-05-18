@@ -13,7 +13,7 @@ const {
 const auth = require('../middlewares/auth');
 const { user } = require('../middlewares/role');
 
-router.get('/', async (req, res) => {
+router.get('/', async (_, res) => {
     try {
         let products = await productRepo.getAllProducts();
         res.status(200).send(products);

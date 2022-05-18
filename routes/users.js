@@ -51,6 +51,17 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.delete('/', [auth, admin], async (req, res) => {
+    try {
+        let userId = req.query.id;
+        await userRepo.deleteUserById(userId);
+        res.status(202).send({ userId });
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
 router.delete('/me', [auth], async (req, res) => {
     try {
         let userId = req.currentUser.sub;
