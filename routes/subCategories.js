@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const subCategoryRepo = require('../repositories/SubCategoryRepository');
+const mainCategoryRepo = require('../repositories/MainCategoryRepository');
 const { mapRequestToSubCategory } = require('../utils/requestMapper');
 
 const {
@@ -34,6 +35,26 @@ router.get('/:id', [auth, admin], async (req, res) => {
         res.status(400).send({ error: error.message })
     }
 });
+
+router.get('/', [auth, admin], async (req, res) => {
+    try {
+        let mainCategoryId = req.query.mainCategoryId;
+        let mainCategory = await mainCategoryRepo.getMainCategoryById(mainCategoryId);
+
+        let subCategoriesByMainCategories = [];
+
+        mainCategory.subCategories.forEach(async s => {
+            let subCategory = await subCategoryRepo.getSubCategoryById(s);
+            subCategoriesByMainCategories.push(subCategory);
+        });
+
+        res.status(200).send(subCategoriesByMainCategories);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+});
+
 
 router.post('/', [auth, admin], async (req, res) => {
     try {
