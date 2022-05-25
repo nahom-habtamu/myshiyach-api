@@ -23,7 +23,7 @@ router.get('/', async (_, res) => {
     }
 });
 
-router.get('/:id', [auth], async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         let productId = req.params.id;
         let product = await productRepo.getProductById(productId);
@@ -34,9 +34,9 @@ router.get('/:id', [auth], async (req, res) => {
     }
 });
 
-router.post('/', [auth, user], async (req, res) => {
+router.post('/', async (req, res) => {
     try {
-        let product = mapRequestToProduct(req.body);
+        let product = mapRequestToProduct(req.body, new Date().toDateString(), "Nahom");
         const { error } = createProductRequestValidationSchema
             .validate(product)
         if (error)
@@ -49,7 +49,7 @@ router.post('/', [auth, user], async (req, res) => {
     }
 });
 
-router.delete('/:id', [auth], async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         let productId = req.params.id;
         await productRepo.deleteProductById(productId);
@@ -60,7 +60,7 @@ router.delete('/:id', [auth], async (req, res) => {
     }
 });
 
-router.put('/:id', [auth, user], async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         let productId = req.params.id;
         let product = mapRequestToProduct(req.body);
@@ -80,10 +80,10 @@ router.put('/:id', [auth, user], async (req, res) => {
     }
 });
 
-router.patch('/:id', [auth, user], async (req, res) => {
+router.patch('/:id',async (req, res) => {
     try {
         let productId = req.params.id;
-        let product = mapRequestToProduct(req.body);
+        let product = mapRequestToProduct(req.body, new Date().toDateString(), "Nahom");
 
         const { error } = patchProductRequestValidationSchema
             .validate(product);

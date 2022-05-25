@@ -44,6 +44,10 @@ const patchProductById = async (id, product) => {
             mainCategory: product.mainCategory ?? productInDb.mainCategory,
             subCategory: product.subCategory ?? productInDb.subCategory,
             brand: product.brand ?? productInDb.brand,
+            createdAt: productInDb.createdAt,
+            createdBy: productInDb.createdBy,
+            productImages: product.productImages ?? productInDb.productImages,
+            state: product.state ?? productInDb.state,
             other: product.other ?
                  { ...product.other } : {...productInDb.other},
         },

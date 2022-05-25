@@ -36,7 +36,7 @@ const mapRequestToSubCategory = (requestBody) => {
 }
 
 
-const mapRequestToProduct = (requestBody) => {
+const mapRequestToProduct = (requestBody, createdAt, createdBy) => {
     let product = {
         title : requestBody.title,
         description : requestBody.description,
@@ -44,6 +44,10 @@ const mapRequestToProduct = (requestBody) => {
         mainCategory : requestBody.mainCategory,
         subCategory : requestBody.subCategory,
         brand : requestBody.brand,
+        state : requestBody.state,
+        productImages : requestBody.productImages,
+        createdAt : createdAt,
+        createdBy : createdBy,
         other : requestBody.other === 
             undefined ? undefined : { ...requestBody.other },
     };

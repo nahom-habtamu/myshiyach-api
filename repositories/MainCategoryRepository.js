@@ -3,10 +3,9 @@ const subCategoryRepo = require('../repositories/SubCategoryRepository');
 
 const getAllMainCategories = async () => {
     let mainCategories = await MainCategory.find({});    
-    // let mainCategoriesWithSubCategoriesAdded = 
-    //     await BuildSubCategoriesForEveryMainCategory(mainCategories);
-    // return mainCategoriesWithSubCategoriesAdded;
-    return mainCategories;
+    let mainCategoriesWithSubCategoriesAdded = 
+        await BuildSubCategoriesForEveryMainCategory(mainCategories);
+    return mainCategoriesWithSubCategoriesAdded;
 }
 
 async function BuildSubCategoriesForEveryMainCategory(mainCategories) {
