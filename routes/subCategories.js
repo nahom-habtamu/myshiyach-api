@@ -14,7 +14,7 @@ const {
 const auth = require('../middlewares/auth');
 const { admin } = require('../middlewares/role');
 
-router.get('/', [auth, admin], async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let subCategories = await subCategoryRepo.getAllSubCategories();
         res.status(200).send(subCategories);
@@ -24,7 +24,7 @@ router.get('/', [auth, admin], async (req, res) => {
     }
 });
 
-router.get('/:id', [auth, admin], async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         let subCategoryId = req.params.id;
         let subCategory =
@@ -36,27 +36,7 @@ router.get('/:id', [auth, admin], async (req, res) => {
     }
 });
 
-router.get('/', [auth, admin], async (req, res) => {
-    try {
-        let mainCategoryId = req.query.mainCategoryId;
-        let mainCategory = await mainCategoryRepo.getMainCategoryById(mainCategoryId);
-
-        let subCategoriesByMainCategories = [];
-
-        mainCategory.subCategories.forEach(async s => {
-            let subCategory = await subCategoryRepo.getSubCategoryById(s);
-            subCategoriesByMainCategories.push(subCategory);
-        });
-
-        res.status(200).send(subCategoriesByMainCategories);
-    }
-    catch (error) {
-        res.status(400).send({ error: error.message })
-    }
-});
-
-
-router.post('/', [auth, admin], async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         let subCategory = mapRequestToSubCategory(req.body);
         const { error } =
@@ -72,7 +52,7 @@ router.post('/', [auth, admin], async (req, res) => {
     }
 });
 
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         let subCategoryId = req.params.id;
         await subCategoryRepo.deleteSubCategoryById(subCategoryId);

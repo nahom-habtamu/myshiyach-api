@@ -1,8 +1,28 @@
 const { MainCategory } = require('../models/MainCategory');
+const subCategoryRepo = require('../repositories/SubCategoryRepository');
 
 const getAllMainCategories = async () => {
-    let mainCategories = await MainCategory.find({});
+    let mainCategories = await MainCategory.find({});    
+    // let mainCategoriesWithSubCategoriesAdded = 
+    //     await BuildSubCategoriesForEveryMainCategory(mainCategories);
+    // return mainCategoriesWithSubCategoriesAdded;
     return mainCategories;
+}
+
+async function BuildSubCategoriesForEveryMainCategory(mainCategories) {
+    let mainCategoriesWithSubCategoriesAdded = [];
+    for (let i = 0; i < mainCategories.length; i++) {
+        let subCategories = await buildSubCategories(mainCategories[i]);
+        mainCategoriesWithSubCategoriesAdded = [
+            ...mainCategoriesWithSubCategoriesAdded,
+            {
+                _id: mainCategories[i]._id,
+                title: mainCategories[i].title,
+                subCategories: subCategories
+            }
+        ];
+    }
+    return mainCategoriesWithSubCategoriesAdded;
 }
 
 const getMainCategoryById = async (id) => {
@@ -10,16 +30,42 @@ const getMainCategoryById = async (id) => {
     if (!mainCategory) {
         throw new Error("MainCategory Not Found")
     }
-    return mainCategory;
+    let subCategories = await buildSubCategories(mainCategory);
+    return {
+        _id : mainCategory._id, 
+        title : mainCategory.title, 
+        subCategories : subCategories
+    };
+}
+
+async function buildSubCategories(mainCategory) {
+    let subCategories = [];
+    for (let i = 0; i < mainCategory.subCategories.length; i++) {
+        let subCategoryId = (mainCategory.subCategories)[i];
+        let subCategory = await subCategoryRepo.getSubCategoryById(subCategoryId);
+        subCategories = [...subCategories, subCategory];
+    }
+    return subCategories;
 }
 
 const deleteMainCategoryById = async (id) => {
-    let deletedMainCategory =
-        await MainCategory.findByIdAndRemove(id).exec();
-    if (!deletedMainCategory) {
+    let mainCategory = 
+        await MainCategory.findById(id).exec();
+    if (!mainCategory) {
         throw new Error("MainCategory Not Found")
     }
-    return deletedMainCategory;
+    else {
+        let deletedMainCategory =
+            await MainCategory.findByIdAndRemove(id).exec();
+        await deleteAllSubCategories(deletedMainCategory);
+        return deletedMainCategory;
+    }
+}
+
+const deleteAllSubCategories = async (deletedMainCategory) => {
+    return deletedMainCategory.subCategories.forEach(async element => {
+        await subCategoryRepo.deleteSubCategoryById(element);
+    });
 }
 
 const updateMainCategoryById = async (id, mainCategory) => {
@@ -27,7 +73,13 @@ const updateMainCategoryById = async (id, mainCategory) => {
         id, mainCategory,
         { new: true }
     ).exec();
-    return updatedMainCategory;
+
+    let subCategories = await buildSubCategories(updatedMainCategory);
+    return {
+        _id : updatedMainCategory._id, 
+        title : updatedMainCategory.title, 
+        subCategories : subCategories
+    };
 }
 
 const patchMainCategoryById = async (id, mainCategory) => {
@@ -40,16 +92,26 @@ const patchMainCategoryById = async (id, mainCategory) => {
     },
         { new: true }
     ).exec();
-    return patchedMainCategory;
+
+    let subCategories = await buildSubCategories(patchedMainCategory);
+    return {
+        _id : patchedMainCategory._id, 
+        title : patchedMainCategory.title, 
+        subCategories : subCategories
+    };
 }
 
 const createMainCategory = async (mainCategory) => {
+    let subCategories = await buildSubCategories(mainCategory);
     const mainCategoryToCreate = new MainCategory({
         ...mainCategory
     });
-
     const response = await mainCategoryToCreate.save();
-    return response;
+    return {
+        _id : response._id, 
+        title : response.title, 
+        subCategories : subCategories
+    };
 }
 
 module.exports = {
