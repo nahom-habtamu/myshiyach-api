@@ -13,7 +13,7 @@ const {
 const auth = require('../middlewares/auth');
 const { admin } = require('../middlewares/role');
 
-router.get('/', [auth, admin], async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let mainCategories =
             await mainCategoryRepo.getAllMainCategories();
@@ -24,7 +24,7 @@ router.get('/', [auth, admin], async (req, res) => {
     }
 });
 
-router.get('/:id', [auth, admin], async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         let mainCategoryId = req.params.id;
         let mainCategory =
@@ -36,7 +36,7 @@ router.get('/:id', [auth, admin], async (req, res) => {
     }
 });
 
-router.post('/', [auth, admin], async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         let mainCategory = mapRequestToMainCategory(req.body);
         const { error } =
@@ -52,7 +52,7 @@ router.post('/', [auth, admin], async (req, res) => {
     }
 });
 
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         let mainCategoryId = req.params.id;
         await mainCategoryRepo.deleteMainCategoryById(mainCategoryId);
@@ -63,7 +63,7 @@ router.delete('/:id', [auth, admin], async (req, res) => {
     }
 });
 
-router.put('/:id', [auth, admin], async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         let mainCategoryId = req.params.id;
         let mainCategory = mapRequestToMainCategory(req.body);
@@ -82,7 +82,7 @@ router.put('/:id', [auth, admin], async (req, res) => {
     }
 });
 
-router.patch('/:id', [auth, admin], async (req, res) => {
+router.patch('/:id', async (req, res) => {
     try {
         let mainCategoryId = req.params.id;
         let mainCategory = mapRequestToMainCategory(req.body);
