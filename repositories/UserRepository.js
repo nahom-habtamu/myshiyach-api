@@ -7,7 +7,7 @@ const getAllUsers = async () => {
 
 const getUserByUsernameAndPassword = async ({ userName, password }) => {
     let user = await User.findOne({
-        email: userName, password: password
+        phoneNumber: userName, password: password
     });
     return user;
 }
