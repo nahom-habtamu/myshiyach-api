@@ -34,9 +34,10 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', [auth, user], async (req, res) => {
     try {
-        let product = mapRequestToProduct(req.body, new Date().toDateString(), "Nahom");
+        let userId = req.currentUser.sub;
+        let product = mapRequestToProduct(req.body, new Date().toString(), userId);
         const { error } = createProductRequestValidationSchema
             .validate(product)
         if (error)
@@ -80,7 +81,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.patch('/:id',async (req, res) => {
+router.patch('/:id', async (req, res) => {
     try {
         let productId = req.params.id;
         let product = mapRequestToProduct(req.body, new Date().toDateString(), "Nahom");
