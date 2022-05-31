@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/', [auth, admin], async (req, res) => {
+router.delete('/', [auth], async (req, res) => {
     try {
         let userId = req.query.id;
         await userRepo.deleteUserById(userId);
@@ -62,20 +62,9 @@ router.delete('/', [auth, admin], async (req, res) => {
     }
 });
 
-router.delete('/me', [auth], async (req, res) => {
+router.put('/:id', [auth], async (req, res) => {
     try {
-        let userId = req.currentUser.sub;
-        await userRepo.deleteUserById(userId);
-        res.status(202).send({ userId });
-    }
-    catch (error) {
-        res.status(400).send({ error: error.message });
-    }
-});
-
-router.put('/me', [auth], async (req, res) => {
-    try {
-        let userId = req.currentUser.sub;
+        let userId = req.params.id;
         let user = mapRequestToUser(req.body);
         const { error } = putUserRequestValidationSchema.validate(user);
         if (error)
@@ -88,9 +77,9 @@ router.put('/me', [auth], async (req, res) => {
     }
 });
 
-router.patch('/me', [auth], async (req, res) => {
+router.patch('/:id', [auth], async (req, res) => {
     try {
-        let userId = req.currentUser.sub;
+        let userId = req.params.id;
         let user = mapRequestToUser(req.body);
 
         const { error } = patchUserRequestValidationSchema.validate(user);
