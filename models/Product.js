@@ -29,19 +29,23 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, "Enter State Whether New Or Old"]
     },
-    productImages : {
+    city: {
+        type: String,
+        required: [true, "Enter City"]
+    },
+    productImages: {
         type: [String],
         required: [true, "Enter Images For Product"]
     },
-    createdAt : {
+    createdAt: {
         type: String,
         required: [true, "Please Enter The Time Product was created"]
     },
-    createdBy : {
+    createdBy: {
         type: String,
         required: [true, "Please Enter ID of user who created the product"]
     },
-    other : {}
+    other: {}
 });
 
 const Product = new mongoose.model('Product', productSchema);

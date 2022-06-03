@@ -5,7 +5,7 @@ const mapRequestToUser = (requestBody) => {
         phoneNumber: requestBody.phoneNumber,
         profilePicture: requestBody.profilePicture
     }
-    if(requestBody.password)
+    if (requestBody.password)
         user["password"] = requestBody.password;
     return user;
 };
@@ -22,7 +22,7 @@ const mapRequestToAdmin = (requestBody) => {
     let admin = {
         userName: requestBody.userName
     };
-    if(requestBody.password)
+    if (requestBody.password)
         admin["password"] = requestBody.password
     return admin;
 }
@@ -38,17 +38,18 @@ const mapRequestToSubCategory = (requestBody) => {
 
 const mapRequestToProduct = (requestBody, createdAt, createdBy) => {
     let product = {
-        title : requestBody.title,
-        description : requestBody.description,
-        price : requestBody.price,
-        mainCategory : requestBody.mainCategory,
-        subCategory : requestBody.subCategory,
-        brand : requestBody.brand,
-        state : requestBody.state,
-        productImages : requestBody.productImages,
-        createdAt : createdAt,
-        createdBy : createdBy,
-        other : requestBody.other === 
+        title: requestBody.title,
+        description: requestBody.description,
+        price: requestBody.price,
+        mainCategory: requestBody.mainCategory,
+        subCategory: requestBody.subCategory,
+        brand: requestBody.brand,
+        state: requestBody.state,
+        city: requestBody.city,
+        productImages: requestBody.productImages,
+        createdAt: createdAt,
+        createdBy: createdBy,
+        other: requestBody.other ===
             undefined ? undefined : { ...requestBody.other },
     };
     return product;
