@@ -37,7 +37,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', [auth, user], async (req, res) => {
     try {
         let userId = req.currentUser.sub;
-        let product = mapRequestToProduct(req.body, new Date().toString(), userId);
+        let product = mapRequestToProduct(req.body, new Date().toLocaleString(), userId);
         const { error } = createProductRequestValidationSchema
             .validate(product)
         if (error)
