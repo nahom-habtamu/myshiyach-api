@@ -7,7 +7,7 @@ const getAllProducts = async () => {
 
 const getProductById = async (id) => {
     const product = await Product.findById(id).exec();
-    if(!product){
+    if (!product) {
         throw new Error('Product Not Found');
     }
     return product;
@@ -25,9 +25,9 @@ const deleteProductById = async (id) => {
 const updateProductById = async (id, product) => {
     const updatedProduct = await Product.findByIdAndUpdate(
         id, {
-            ...product,
-            other : product.other ? { ...product.other } : {} 
-        },
+        ...product,
+        other: product.other ? { ...product.other } : {}
+    },
         { new: true }
     ).exec();
     return updatedProduct;
@@ -38,19 +38,20 @@ const patchProductById = async (id, product) => {
 
     const patchedProduct = await Product.findByIdAndUpdate(
         id, {
-            title: product.title ?? productInDb.title,
-            description: product.description ?? productInDb.description,
-            price: product.price ?? productInDb.price,
-            mainCategory: product.mainCategory ?? productInDb.mainCategory,
-            subCategory: product.subCategory ?? productInDb.subCategory,
-            brand: product.brand ?? productInDb.brand,
-            createdAt: productInDb.createdAt,
-            createdBy: productInDb.createdBy,
-            productImages: product.productImages ?? productInDb.productImages,
-            state: product.state ?? productInDb.state,
-            other: product.other ?
-                 { ...product.other } : {...productInDb.other},
-        },
+        title: product.title ?? productInDb.title,
+        description: product.description ?? productInDb.description,
+        price: product.price ?? productInDb.price,
+        mainCategory: product.mainCategory ?? productInDb.mainCategory,
+        subCategory: product.subCategory ?? productInDb.subCategory,
+        brand: product.brand ?? productInDb.brand,
+        createdAt: productInDb.createdAt,
+        createdBy: productInDb.createdBy,
+        city: product.city ?? productInDb.city,
+        productImages: product.productImages ?? productInDb.productImages,
+        state: product.state ?? productInDb.state,
+        other: product.other ?
+            { ...product.other } : { ...productInDb.other },
+    },
         { new: true }
     ).exec();
     return patchedProduct;
