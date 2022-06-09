@@ -51,9 +51,9 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/', [auth], async (req, res) => {
+router.delete('/:id', [auth], async (req, res) => {
     try {
-        let userId = req.query.id;
+        let userId = req.params.id;
         await userRepo.deleteUserById(userId);
         res.status(202).send({ userId });
     }
