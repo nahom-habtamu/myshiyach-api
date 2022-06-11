@@ -13,9 +13,14 @@ const {
 const auth = require('../middlewares/auth');
 const { user } = require('../middlewares/role');
 
-router.get('/', async (_, res) => {
+router.get('/', async (req, res) => {
     try {
+
+        let createdBy = req.query.createdBy;
         let products = await productRepo.getAllProducts();
+        if (createdBy != null) {
+            products = products.filter(p => p.createdBy === createdBy);
+        }
         res.status(200).send(products);
     }
     catch (error) {
