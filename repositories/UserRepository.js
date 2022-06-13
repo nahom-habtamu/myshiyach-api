@@ -12,6 +12,14 @@ const getUserByUsernameAndPassword = async ({ userName, password }) => {
     return user;
 }
 
+const changeUserPassword = async ({ phoneNumber, password }) => {
+    let user = await User.findOne({
+        phoneNumber: phoneNumber
+    });
+    user.password = password;
+    updateUserById(user._id, user);
+}
+
 const getUserById = async (id) => {
     let user = await User.findById(id).exec();
     if (!user) {
@@ -68,5 +76,6 @@ module.exports = {
     deleteUserById,
     updateUserById,
     patchUserById,
-    getUserByUsernameAndPassword
+    getUserByUsernameAndPassword,
+    changeUserPassword
 }

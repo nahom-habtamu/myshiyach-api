@@ -7,7 +7,8 @@ const { mapRequestToUser } = require('../utils/requestMapper');
 const {
     createUserRequestValidationSchema,
     putUserRequestValidationSchema,
-    patchUserRequestValidationSchema
+    patchUserRequestValidationSchema,
+    changePasswordRequestValidationSchema
 } = require('../validation-schemas/UserRequestValidationSchema');
 
 const auth = require('../middlewares/auth');
@@ -34,6 +35,20 @@ router.get('/:id', [auth], async (req, res) => {
     }
 });
 
+router.post('/changePassword', async (req, res) => {
+    try {
+        const { error } =
+            changePasswordRequestValidationSchema.validate(req.body);
+        if (error)
+            throw error;
+        await userRepo.changeUserPassword(req.body);
+        res.status(201).send();
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         let user = mapRequestToUser(req.body);
@@ -46,7 +61,6 @@ router.post('/', async (req, res) => {
         res.status(201).send(userCreated);
     }
     catch (error) {
-        console.log(error);
         res.status(400).send({ error: error.message });
     }
 });
