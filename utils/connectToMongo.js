@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 module.exports = function (dbName) {
     try {
-        mongoose.connect(`mongodb+srv://nahom-hab:ecommercetest@cluster0.rxw0t.mongodb.net/${dbName}?retryWrites=true&w=majority`, {
+        mongoose.connect(`mongodb://localhost/${dbName}`, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
