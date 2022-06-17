@@ -52,7 +52,6 @@ const patchUserById = async (id, user) => {
         email: user.email ?? userInDb.email,
         password: user.password ?? userInDb.password,
         phoneNumber: user.phoneNumber ?? userInDb.phoneNumber,
-        profilePicture: user.profilePicture ?? userInDb.profilePicture,
     },
         { new: true }
     ).exec();
@@ -63,7 +62,6 @@ const createUser = async (user) => {
     const userToCreate = new User({
         ...user
     });
-
     const response = await userToCreate.save();
     return response;
 }

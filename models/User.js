@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
-        required: [true, "Enter Valid Email"],
         maxlength: 50,
     },
     password: {
@@ -25,6 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
+        unique: true,
         maxlength: 13,
         minlength: 10,
         required: [true, "Enter Your Phone Number"],
@@ -34,9 +34,6 @@ const userSchema = new mongoose.Schema({
             },
             error: "Invalid Phone Number"
         }
-    },
-    profilePicture: {
-        type: String,
     }
 });
 

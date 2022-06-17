@@ -1,9 +1,8 @@
 const mapRequestToUser = (requestBody) => {
     let user = {
         fullName: requestBody.fullName,
-        email: requestBody.email,
+        email: requestBody.email ?? "",
         phoneNumber: requestBody.phoneNumber,
-        profilePicture: requestBody.profilePicture
     }
     if (requestBody.password)
         user["password"] = requestBody.password;

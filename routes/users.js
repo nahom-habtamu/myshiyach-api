@@ -55,6 +55,8 @@ router.post('/', async (req, res) => {
         const { error } =
             createUserRequestValidationSchema.validate(user);
 
+        
+
         if (error)
             throw error;
         let userCreated = await userRepo.createUser(user);
