@@ -13,9 +13,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true,
         maxlength: 50,
-        sparse: true,
     },
     password: {
         type: String,
@@ -25,7 +23,6 @@ const userSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
-        unique: true,
         maxlength: 13,
         minlength: 10,
         required: [true, "Enter Your Phone Number"],
