@@ -14,15 +14,14 @@ const {
 const auth = require('../middlewares/auth');
 const { admin } = require('../middlewares/role');
 
-router.get('/', async (req, res) => {
-    // try {
-    //     let users = await userRepo.getAllUsers();
-    //     res.status(200).send(users);
-    // }
-    // catch (error) {
-    //     res.status(400).send({ error: error.message })
-    // }
-    res.send("djadad");
+router.get('/', [auth, admin], async (req, res) => {
+    try {
+        let users = await userRepo.getAllUsers();
+        res.status(200).send(users);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message })
+    }
 });
 
 router.get('/:id', [auth], async (req, res) => {
@@ -56,7 +55,7 @@ router.post('/', async (req, res) => {
         const { error } =
             createUserRequestValidationSchema.validate(user);
 
-
+        
 
         if (error)
             throw error;
