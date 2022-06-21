@@ -116,6 +116,10 @@ function buildCreatedAtTime() {
 
     let unformattedDate = convertedDate[0].split("/");
 
-    let createdAt = unformattedDate[2] + "-" + unformattedDate[1] + "-" + unformattedDate[0] + convertedDate[1];
+    let createdAt =
+        unformattedDate[2] + "-" +
+        unformattedDate[0] + "-" +
+        unformattedDate[1] +
+        convertedDate[1];
     return createdAt;
 }
