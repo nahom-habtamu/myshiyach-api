@@ -42,14 +42,17 @@ router.get('/:id', async (req, res) => {
 router.post('/', [auth, user], async (req, res) => {
     try {
         let userId = req.currentUser.sub;
-        let createdAt = new Date().toISOString().substr(0, 19).replace('T', ' ');
+        let createdAt = new Date()
+            .toLocaleString('en-US', { timeZone: 'Africa/Addis_Ababa' })
+            .replace(",", "");
+
         let product = mapRequestToProduct(req.body, createdAt, userId);
         const { error } = createProductRequestValidationSchema
             .validate(product)
         if (error)
             throw error;
         let productCreated = await productRepo.createProduct(product);
-        res.status(201).send(productCreated);
+        res.status(201).send(createdAt);
     }
     catch (error) {
         res.status(400).send({ error: error.message });
