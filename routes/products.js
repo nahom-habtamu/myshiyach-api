@@ -50,7 +50,7 @@ router.post('/', [auth, user], async (req, res) => {
         if (error)
             throw error;
         let productCreated = await productRepo.createProduct(product);
-        res.status(201).send(createdAt);
+        res.status(201).send(productCreated);
     }
     catch (error) {
         res.status(400).send({ error: error.message });
