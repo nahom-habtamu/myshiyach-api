@@ -40,8 +40,8 @@ const patchProductRequestValidationSchema = Joi.object({
     brand: Joi.string(),
     state: Joi.string(),
     city: Joi.string(),
-    createdBy: Joi.string(),
-    createdAt: Joi.string(),
+    createdBy: Joi.string().allow(""),
+    createdAt: Joi.string().allow(""),
     productImages: Joi.array().min(1),
     other: Joi.object(),
 });
