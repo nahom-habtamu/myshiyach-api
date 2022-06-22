@@ -91,8 +91,7 @@ router.put('/:id', async (req, res) => {
 router.patch('/:id', async (req, res) => {
     try {
         let productId = req.params.id;
-        let product = mapRequestToProduct(req.body, new Date().toDateString(), "Nahom");
-
+        let product = mapRequestToProduct(req.body, "", "");
         const { error } = patchProductRequestValidationSchema
             .validate(product);
         if (error)
@@ -108,11 +107,10 @@ router.patch('/:id', async (req, res) => {
     }
 });
 
-module.exports = router;
-
 function buildCreatedAtTime() {
     let convertedDate = new Date()
-        .toLocaleString('en-US', { timeZone: 'Africa/Addis_Ababa' }).split(",");
+        .toLocaleString('en-US', { timeZone: 'Africa/Addis_Ababa' })
+        .split(",");
 
     let unformattedDate = convertedDate[0].split("/");
 
@@ -123,3 +121,7 @@ function buildCreatedAtTime() {
         convertedDate[1];
     return createdAt;
 }
+
+
+
+module.exports = router;
