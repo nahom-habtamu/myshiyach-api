@@ -110,18 +110,7 @@ router.patch('/:id', async (req, res) => {
 function buildCreatedAtTime() {
     let convertedDate = new Date()
         .toLocaleString('en-US', { timeZone: 'Africa/Addis_Ababa' })
-        .split(",");
-
-    let unformattedDate = convertedDate[0].split("/");
-
-    let createdAt =
-        unformattedDate[2] + "-" +
-        unformattedDate[0] + "-" +
-        unformattedDate[1] +
-        convertedDate[1];
-    return createdAt;
+    return convertedDate;
 }
-
-
-
+    
 module.exports = router;
