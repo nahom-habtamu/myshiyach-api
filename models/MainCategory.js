@@ -11,6 +11,15 @@ const mainCategorySchema = new mongoose.Schema({
     subCategories: {
         type: [mongoose.Schema.Types.ObjectId],
         required: [true, "Please Enter Sub Categories"]
+    },
+    requiredFields: {
+        type: [
+            {
+                objectKey: String,
+                isDropDown: Boolean,
+                dropDownValues: [String]
+            }
+        ]
     }
 });
 

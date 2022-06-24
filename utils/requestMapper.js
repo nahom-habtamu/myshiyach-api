@@ -12,7 +12,8 @@ const mapRequestToUser = (requestBody) => {
 const mapRequestToMainCategory = (requestBody) => {
     let mainCategory = {
         title: requestBody.title,
-        subCategories: requestBody.subCategories
+        subCategories: requestBody.subCategories,
+        requiredFields: requestBody.requiredFields,
     };
     return mainCategory;
 }
@@ -28,8 +29,7 @@ const mapRequestToAdmin = (requestBody) => {
 
 const mapRequestToSubCategory = (requestBody) => {
     let subCategory = {
-        title: requestBody.title,
-        additionalData: requestBody.additionalData
+        title: requestBody.title
     };
     return subCategory;
 }
@@ -42,14 +42,12 @@ const mapRequestToProduct = (requestBody, createdAt, createdBy) => {
         price: requestBody.price,
         mainCategory: requestBody.mainCategory,
         subCategory: requestBody.subCategory,
-        brand: requestBody.brand,
-        state: requestBody.state,
         city: requestBody.city,
         productImages: requestBody.productImages,
         createdAt: createdAt,
         createdBy: createdBy,
-        other: requestBody.other ===
-            undefined ? undefined : { ...requestBody.other },
+        productDetail: requestBody.productDetail ===
+            undefined ? undefined : { ...requestBody.productDetail },
     };
     return product;
 }

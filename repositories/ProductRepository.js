@@ -26,7 +26,7 @@ const updateProductById = async (id, product) => {
     const updatedProduct = await Product.findByIdAndUpdate(
         id, {
         ...product,
-        other: product.other ? { ...product.other } : {}
+        productDetail: product.productDetail ? { ...product.productDetail } : {}
     },
         { new: true }
     ).exec();
@@ -43,14 +43,13 @@ const patchProductById = async (id, product) => {
         price: product.price ?? productInDb.price,
         mainCategory: product.mainCategory ?? productInDb.mainCategory,
         subCategory: product.subCategory ?? productInDb.subCategory,
-        brand: product.brand ?? productInDb.brand,
         createdAt: productInDb.createdAt,
         createdBy: productInDb.createdBy,
         city: product.city ?? productInDb.city,
         productImages: product.productImages ?? productInDb.productImages,
-        state: product.state ?? productInDb.state,
-        other: product.other ?
-            { ...product.other } : { ...productInDb.other },
+        productDetail: product.productDetail ?
+            { ...product.productDetail } :
+            { ...productInDb.productDetail },
     },
         { new: true }
     ).exec();

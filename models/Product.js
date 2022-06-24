@@ -21,14 +21,6 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please Select Main Category"]
     },
-    brand: {
-        type: String,
-        required: [true, "Enter Brand Of Product"]
-    },
-    state: {
-        type: String,
-        required: [true, "Enter State Whether New Or Old"]
-    },
     city: {
         type: String,
         required: [true, "Enter City"]
@@ -45,7 +37,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please Enter ID of user who created the product"]
     },
-    other: {}
+    productDetail: {}
 });
 
 const Product = new mongoose.model('Product', productSchema);

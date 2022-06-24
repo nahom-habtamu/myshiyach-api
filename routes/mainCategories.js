@@ -41,11 +41,10 @@ router.post('/', async (req, res) => {
         let mainCategory = mapRequestToMainCategory(req.body);
         const { error } =
             createMainCategoryRequestValidationSchema.validate(mainCategory);
-        if (error)
-            throw error;
-        let createdSubCategory =
+        if (error) throw error;
+        let createdMainCategory =
             await mainCategoryRepo.createMainCategory(mainCategory);
-        res.status(201).send(createdSubCategory);
+        res.status(201).send(createdMainCategory);
     }
     catch (error) {
         res.status(400).send({ error: error.message });

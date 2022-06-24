@@ -2,8 +2,8 @@ const { MainCategory } = require('../models/MainCategory');
 const subCategoryRepo = require('../repositories/SubCategoryRepository');
 
 const getAllMainCategories = async () => {
-    let mainCategories = await MainCategory.find({});    
-    let mainCategoriesWithSubCategoriesAdded = 
+    let mainCategories = await MainCategory.find({});
+    let mainCategoriesWithSubCategoriesAdded =
         await BuildSubCategoriesForEveryMainCategory(mainCategories);
     return mainCategoriesWithSubCategoriesAdded;
 }
@@ -17,7 +17,8 @@ async function BuildSubCategoriesForEveryMainCategory(mainCategories) {
             {
                 _id: mainCategories[i]._id,
                 title: mainCategories[i].title,
-                subCategories: subCategories
+                subCategories: subCategories,
+                requiredFields: mainCategories[i].requiredFields,
             }
         ];
     }
@@ -31,9 +32,10 @@ const getMainCategoryById = async (id) => {
     }
     let subCategories = await buildSubCategories(mainCategory);
     return {
-        _id : mainCategory._id, 
-        title : mainCategory.title, 
-        subCategories : subCategories
+        _id: mainCategory._id,
+        title: mainCategory.title,
+        subCategories: subCategories,
+        requiredFields: mainCategory.requiredFields,
     };
 }
 
@@ -48,7 +50,7 @@ async function buildSubCategories(mainCategory) {
 }
 
 const deleteMainCategoryById = async (id) => {
-    let mainCategory = 
+    let mainCategory =
         await MainCategory.findById(id).exec();
     if (!mainCategory) {
         throw new Error("MainCategory Not Found")
@@ -75,9 +77,10 @@ const updateMainCategoryById = async (id, mainCategory) => {
 
     let subCategories = await buildSubCategories(updatedMainCategory);
     return {
-        _id : updatedMainCategory._id, 
-        title : updatedMainCategory.title, 
-        subCategories : subCategories
+        _id: updatedMainCategory._id,
+        title: updatedMainCategory.title,
+        subCategories: subCategories,
+        requiredFields: updatedMainCategory.requiredFields
     };
 }
 
@@ -94,9 +97,10 @@ const patchMainCategoryById = async (id, mainCategory) => {
 
     let subCategories = await buildSubCategories(patchedMainCategory);
     return {
-        _id : patchedMainCategory._id, 
-        title : patchedMainCategory.title, 
-        subCategories : subCategories
+        _id: patchedMainCategory._id,
+        title: patchedMainCategory.title,
+        subCategories: subCategories,
+        requiredFields: patchedMainCategory.requiredFields
     };
 }
 
@@ -107,9 +111,10 @@ const createMainCategory = async (mainCategory) => {
     });
     const response = await mainCategoryToCreate.save();
     return {
-        _id : response._id, 
-        title : response.title, 
-        subCategories : subCategories
+        _id: response._id,
+        title: response.title,
+        subCategories: subCategories,
+        requiredFields: response.requiredFields
     };
 }
 
