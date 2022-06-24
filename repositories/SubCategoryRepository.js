@@ -34,8 +34,7 @@ const patchSubCategoryById = async (id, subCategory) => {
     let subCategoryInDb = await getSubCategoryById(id);
     const patchedSubCategory = await SubCategory.findByIdAndUpdate(
         id, {
-        title: subCategory.title ?? subCategoryInDb.title,
-        additionalData: subCategory.additionalData ?? subCategoryInDb.additionalData,
+        title: subCategory.title ?? subCategoryInDb.title
     },
         { new: true }
     ).exec();
