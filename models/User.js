@@ -23,8 +23,6 @@ const userSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
-        maxlength: 13,
-        minlength: 10,
         required: [true, "Enter Your Phone Number"],
         validate: {
             validator: (pn) => {

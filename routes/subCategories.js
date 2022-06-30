@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const subCategoryRepo = require('../repositories/SubCategoryRepository');
-const mainCategoryRepo = require('../repositories/MainCategoryRepository');
 const { mapRequestToSubCategory } = require('../utils/requestMapper');
 
 const {
