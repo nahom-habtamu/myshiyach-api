@@ -24,12 +24,6 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         required: [true, "Enter Your Phone Number"],
-        validate: {
-            validator: (pn) => {
-                return validatePhoneNumber(pn);
-            },
-            error: "Invalid Phone Number"
-        }
     }
 });
 

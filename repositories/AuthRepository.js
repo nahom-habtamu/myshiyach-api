@@ -1,18 +1,27 @@
+const bcrypt = require('bcrypt');
+
 const { getAdminByUsernameAndPassword } = require('./AdminRepository');
-const { getUserByUsernameAndPassword } = require('./UserRepository');
+const { getUserByUsername } = require('./UserRepository');
 
 const findUserAndGenerateToken = async (authRequest) => {
-    const user = await getUserByUsernameAndPassword(authRequest);
+    const user = await getUserByUsername(authRequest);
     const admin = await getAdminByUsernameAndPassword(authRequest);
-
-    if (!user && !admin) {
-        throw new Error('User Not Found');
-    }
-    else if (user != null) {
+    if (admin == null && user != null) {
+        const checkedPassword = await bcrypt.compare(
+            authRequest.password, user.password
+        );
+        if (!checkedPassword) {
+            throw new Error('Incorrect Password');
+        }
         return user.generateAuthToken();
     }
+
+    else if (admin != null && user == null) {
+        return user.generateAuthToken();
+    }
+
     else {
-        return admin.generateAuthToken();
+        throw new Error('User Not Found');
     }
 }
 

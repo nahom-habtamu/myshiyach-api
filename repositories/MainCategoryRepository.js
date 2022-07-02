@@ -89,7 +89,7 @@ const patchMainCategoryById = async (id, mainCategory) => {
     const patchedMainCategory = await MainCategory.findByIdAndUpdate(
         id, {
         title: mainCategory.title ?? mainCategoryInDb.title,
-        subCategories: mainCategory.subCategories
+        subCategories: [...new Set(subCategories)]
             ?? mainCategoryInDb.subCategories,
     },
         { new: true }
@@ -107,7 +107,8 @@ const patchMainCategoryById = async (id, mainCategory) => {
 const createMainCategory = async (mainCategory) => {
     let subCategories = await buildSubCategories(mainCategory);
     const mainCategoryToCreate = new MainCategory({
-        ...mainCategory
+        ...mainCategory,
+        subCategories: [...new Set(mainCategory.subCategories)]
     });
     const response = await mainCategoryToCreate.save();
     return {

@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { User } = require('../models/User');
 
 const getAllUsers = async () => {
@@ -5,9 +6,9 @@ const getAllUsers = async () => {
     return users;
 }
 
-const getUserByUsernameAndPassword = async ({ userName, password }) => {
+const getUserByUsername = async ({ userName }) => {
     let user = await User.findOne({
-        phoneNumber: userName, password: password
+        phoneNumber: userName
     });
     return user;
 }
@@ -21,7 +22,9 @@ const changeUserPassword = async ({ phoneNumber, password }) => {
 }
 
 const getUserById = async (id) => {
-    let user = await User.findById(id).exec();
+    let user = await User.findById(id)
+        .select("_id phoneNumber email fullName")
+        .exec();
     if (!user) {
         throw new Error("User Not Found")
     }
@@ -38,9 +41,9 @@ const deleteUserById = async (id) => {
 
 const updateUserById = async (id, user) => {
     const updatedUser = await User.findByIdAndUpdate(
-        id, user,
+        id, { ...user },
         { new: true }
-    ).exec();
+    ).select("_id phoneNumber email fullName").exec();
     return updatedUser;
 }
 
@@ -50,20 +53,25 @@ const patchUserById = async (id, user) => {
         id, {
         fullName: user.fullName ?? userInDb.fullName,
         email: user.email ?? userInDb.email,
-        password: user.password ?? userInDb.password,
+        password: userInDb.password,
         phoneNumber: user.phoneNumber ?? userInDb.phoneNumber,
     },
         { new: true }
-    ).exec();
+    ).select("_id phoneNumber email fullName").exec();
     return patchedUser;
 }
 
 const createUser = async (user) => {
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(user.password, salt);
     const userToCreate = new User({
-        ...user
+        ...user,
+        password: hashedPassword
     });
     const response = await userToCreate.save();
-    return response;
+    const hiddenPassword = await User.findById(response._id).select("_id phoneNumber email fullName");
+    return hiddenPassword;
 }
 
 
@@ -74,6 +82,6 @@ module.exports = {
     deleteUserById,
     updateUserById,
     patchUserById,
-    getUserByUsernameAndPassword,
+    getUserByUsername,
     changeUserPassword
 }
