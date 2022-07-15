@@ -33,6 +33,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please Enter The Time Product was created"]
     },
+    refreshedAt: {
+        type: String,
+        required: [true, "Please Enter The Time Product was refreshed"]
+    },
     createdBy: {
         type: String,
         required: [true, "Please Enter ID of user who created the product"]

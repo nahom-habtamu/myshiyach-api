@@ -1,3 +1,5 @@
+const createdAtTime = require('../utils/dateTimeUtil')();
+
 const mapRequestToUser = (requestBody) => {
     let user = {
         fullName: requestBody.fullName,
@@ -35,7 +37,7 @@ const mapRequestToSubCategory = (requestBody) => {
 }
 
 
-const mapRequestToProduct = (requestBody, createdAt, createdBy) => {
+const mapRequestToProduct = (requestBody, createdBy) => {
     let product = {
         title: requestBody.title,
         description: requestBody.description,
@@ -44,7 +46,8 @@ const mapRequestToProduct = (requestBody, createdAt, createdBy) => {
         subCategory: requestBody.subCategory,
         city: requestBody.city,
         productImages: requestBody.productImages,
-        createdAt: createdAt,
+        createdAt: createdAtTime,
+        refreshedAt: createdAtTime,
         createdBy: createdBy,
         productDetail: requestBody.productDetail ===
             undefined ? undefined : { ...requestBody.productDetail },

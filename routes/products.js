@@ -107,10 +107,17 @@ router.patch('/:id', async (req, res) => {
     }
 });
 
-function buildCreatedAtTime() {
-    let convertedDate = new Date()
-        .toLocaleString('en-US', { timeZone: 'Africa/Addis_Ababa' })
-    return convertedDate;
-}
-    
+router.patch('/refresh/:id', async (req, res) => {
+    try {
+        let productId = req.params.id;
+        let patchedProduct = await productRepo.refreshProduct(
+            productId
+        );
+        res.status(202).send(patchedProduct);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
 module.exports = router;

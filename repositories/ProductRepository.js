@@ -1,5 +1,7 @@
 const { Product } = require('../models/Product');
 
+const refreshedAtTime = require('../utils/dateTimeUtil')();
+
 const getAllProducts = async () => {
     const products = await Product.find({});
     return products;
@@ -20,6 +22,19 @@ const deleteProductById = async (id) => {
         throw new Error("Product Not Found")
     }
     return deletedProduct;
+}
+
+const refreshProduct = async (id) => {
+    let productInDb = await getProductById(id);
+    if (!productInDb) {
+        throw new Error("Product Not Found");
+    }
+    const updatedProduct = await Product.findByIdAndUpdate(
+        id, {
+        ...productInDb,
+        refreshedAt: refreshedAtTime
+    }, { new: true }).exec();
+    return updatedProduct;
 }
 
 const updateProductById = async (id, product) => {
@@ -43,6 +58,7 @@ const patchProductById = async (id, product) => {
         price: product.price ?? productInDb.price,
         mainCategory: product.mainCategory ?? productInDb.mainCategory,
         subCategory: product.subCategory ?? productInDb.subCategory,
+        refreshedAt: productInDb.refreshedAt,
         createdAt: productInDb.createdAt,
         createdBy: productInDb.createdBy,
         city: product.city ?? productInDb.city,
@@ -71,5 +87,6 @@ module.exports = {
     deleteProductById,
     updateProductById,
     patchProductById,
-    createProduct
+    createProduct,
+    refreshProduct
 }
