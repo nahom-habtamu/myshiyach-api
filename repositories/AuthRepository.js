@@ -17,7 +17,7 @@ const findUserAndGenerateToken = async (authRequest) => {
     }
 
     else if (admin != null && user == null) {
-        return user.generateAuthToken();
+        return admin.generateAuthToken();
     }
 
     else {
