@@ -50,8 +50,6 @@ const updateProductById = async (id, product) => {
 
 const patchProductById = async (id, product) => {
     let productInDb = await getProductById(id);
-    console.log({ ...productInDb });
-
     const patchedProduct = await Product.findByIdAndUpdate(
         id, {
         title: product.title ?? productInDb.title,
