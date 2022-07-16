@@ -9,6 +9,7 @@ const createProductRequestValidationSchema = Joi.object({
     city: Joi.string().required(),
     createdBy: Joi.string().required(),
     createdAt: Joi.string().required(),
+    refreshedAt: Joi.string().required(),
     productImages: Joi.array().min(1).required(),
     productDetail: Joi.object(),
 });
@@ -22,6 +23,7 @@ const putProductRequestValidationSchema = Joi.object({
     city: Joi.string().required(),
     createdBy: Joi.string().allow(""),
     createdAt: Joi.string().allow(""),
+    refreshedAt: Joi.string().allow(""),
     productImages: Joi.array().min(1).required(),
     productDetail: Joi.object(),
 });
@@ -35,6 +37,7 @@ const patchProductRequestValidationSchema = Joi.object({
     city: Joi.string(),
     createdBy: Joi.string().allow(""),
     createdAt: Joi.string().allow(""),
+    refreshedAt: Joi.string().allow(""),
     productImages: Joi.array().min(1),
     productDetail: Joi.object(),
 });

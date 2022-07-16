@@ -1,6 +1,6 @@
 const { Product } = require('../models/Product');
 
-const refreshedAtTime = require('../utils/dateTimeUtil')();
+const refreshedAtTime = require('../utils/dateTimeUtil');
 
 const getAllProducts = async () => {
     const products = await Product.find({});
@@ -31,8 +31,8 @@ const refreshProduct = async (id) => {
     }
     const updatedProduct = await Product.findByIdAndUpdate(
         id, {
-        ...productInDb,
-        refreshedAt: refreshedAtTime
+        ...productInDb._doc,
+        refreshedAt: refreshedAtTime()
     }, { new: true }).exec();
     return updatedProduct;
 }
@@ -50,6 +50,7 @@ const updateProductById = async (id, product) => {
 
 const patchProductById = async (id, product) => {
     let productInDb = await getProductById(id);
+    console.log({ ...productInDb });
 
     const patchedProduct = await Product.findByIdAndUpdate(
         id, {
