@@ -14,10 +14,14 @@ const getUserByUsername = async ({ userName }) => {
 }
 
 const changeUserPassword = async ({ phoneNumber, password }) => {
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     let user = await User.findOne({
         phoneNumber: phoneNumber
     });
-    user.password = password;
+    user.password = hashedPassword;
     updateUserById(user._id, user);
 }
 
