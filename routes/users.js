@@ -42,7 +42,7 @@ router.post('/changePassword', async (req, res) => {
         if (error)
             throw error;
         await userRepo.changeUserPassword(req.body);
-        res.status(201).send();
+        res.status(200).send();
     }
     catch (error) {
         res.status(400).send({ error: error.message });
