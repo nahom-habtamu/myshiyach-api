@@ -4,11 +4,11 @@ const subCategoryRepo = require('../repositories/SubCategoryRepository');
 const getAllMainCategories = async () => {
     let mainCategories = await MainCategory.find({});
     let mainCategoriesWithSubCategoriesAdded =
-        await BuildSubCategoriesForEveryMainCategory(mainCategories);
+        await buildSubCategoriesForEveryMainCategory(mainCategories);
     return mainCategoriesWithSubCategoriesAdded;
 }
 
-async function BuildSubCategoriesForEveryMainCategory(mainCategories) {
+async function buildSubCategoriesForEveryMainCategory(mainCategories) {
     let mainCategoriesWithSubCategoriesAdded = [];
     for (let i = 0; i < mainCategories.length; i++) {
         let subCategories = await buildSubCategories(mainCategories[i]);
@@ -89,8 +89,7 @@ const patchMainCategoryById = async (id, mainCategory) => {
     const patchedMainCategory = await MainCategory.findByIdAndUpdate(
         id, {
         title: mainCategory.title ?? mainCategoryInDb.title,
-        subCategories: [...new Set(subCategories)]
-            ?? mainCategoryInDb.subCategories,
+        subCategories: [...new Set(mainCategoryInDb.subCategories)]
     },
         { new: true }
     ).exec();
@@ -102,6 +101,7 @@ const patchMainCategoryById = async (id, mainCategory) => {
         subCategories: subCategories,
         requiredFields: patchedMainCategory.requiredFields
     };
+    return {};
 }
 
 const createMainCategory = async (mainCategory) => {
