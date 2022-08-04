@@ -3,6 +3,11 @@ const { Product } = require('../models/Product');
 const refreshedAtTime = require('../utils/dateTimeUtil');
 const paginate = require('../middlewares/pagination');
 
+const getAllProducts = async () => {
+    let products = await Product.find({});
+    return products;
+}
+
 const getPaginatedProducts = async (page, limit) => {
     let paginatedProducts = paginate(Product, page, limit);
     return paginatedProducts;
@@ -88,5 +93,6 @@ module.exports = {
     updateProductById,
     patchProductById,
     createProduct,
-    refreshProduct
+    refreshProduct,
+    getAllProducts
 }

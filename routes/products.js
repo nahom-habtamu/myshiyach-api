@@ -16,13 +16,17 @@ const { user } = require('../middlewares/role');
 router.get('/', async (req, res) => {
     try {
         const createdBy = req.query.createdBy;
-        const page = parseInt(req.query.page);
-        const limit = parseInt(req.query.limit);
-        let paginatedResult = productRepo.getPaginatedProducts(page, limit);
+        // const page = parseInt(req.query.page);
+        // const limit = parseInt(req.query.limit);
+        // let paginatedResult = productRepo.getPaginatedProducts(page, limit);
+        // if (createdBy != null) {
+        //     paginatedResult = paginatedResult.filter(p => p.createdBy === createdBy);
+        // }
+        const products = await productRepo.getAllProducts();
         if (createdBy != null) {
-            paginatedResult = paginatedResult.filter(p => p.createdBy === createdBy);
+            products = products.filter(p => p.createdBy === createdBy);
         }
-        res.status(200).send(paginatedResult);
+        res.status(200).send(products);
     }
     catch (error) {
         res.status(400).send({ error: error.message })
@@ -49,13 +53,8 @@ router.post('/', [auth, user], async (req, res) => {
             .validate(product)
         if (error)
             throw error;
-
-        for (let index = 0; index < 1000; index++) {
-            await productRepo.createProduct(product);
-        }
-
-        // let productCreated = await productRepo.createProduct(product);
-        res.status(201).send({});
+        let productCreated = await productRepo.createProduct(product);
+        res.status(201).send(productCreated);
     }
     catch (error) {
         res.status(400).send({ error: error.message });
