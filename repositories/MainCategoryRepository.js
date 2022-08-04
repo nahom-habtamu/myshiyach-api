@@ -84,24 +84,30 @@ const updateMainCategoryById = async (id, mainCategory) => {
     };
 }
 
-const patchMainCategoryById = async (id, mainCategory) => {
-    let mainCategoryInDb = await getMainCategoryById(id);
-    const patchedMainCategory = await MainCategory.findByIdAndUpdate(
+const patchMainCategoryById = async (id, mainCatFromReq) => {
+
+    let mainCatInDb = await getMainCategoryById(id);
+
+    let subCatToInsert = mainCatFromReq.subCategories ? Array.from(...new Set(
+        [mainCatFromReq.subCategories]
+    )) : mainCatInDb.subCategories;
+
+    const patchedMainCat = await MainCategory.findByIdAndUpdate(
         id, {
-        title: mainCategory.title ?? mainCategoryInDb.title,
-        subCategories: [...new Set(mainCategoryInDb.subCategories)]
+        title: mainCatFromReq.title ?? mainCatInDb.title,
+        subCategories: subCatToInsert,
+        requiredFields: mainCatFromReq.requiredFields ?? mainCatInDb.requiredFields
     },
         { new: true }
     ).exec();
 
-    let subCategories = await buildSubCategories(patchedMainCategory);
+    let subCategories = await buildSubCategories(patchedMainCat);
     return {
-        _id: patchedMainCategory._id,
-        title: patchedMainCategory.title,
+        _id: patchedMainCat._id,
+        title: patchedMainCat.title,
         subCategories: subCategories,
-        requiredFields: patchedMainCategory.requiredFields
+        requiredFields: patchedMainCat.requiredFields
     };
-    return {};
 }
 
 const createMainCategory = async (mainCategory) => {
