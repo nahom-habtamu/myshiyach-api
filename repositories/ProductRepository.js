@@ -8,6 +8,11 @@ const getAllProducts = async () => {
     return products;
 }
 
+const getProductsCreatedByUser = async (userId) => {
+    let products = await Product.find({ createdBy: userId });
+    return products;
+}
+
 const getPaginatedProducts = async (page, limit) => {
     let paginatedProducts = paginate(Product, page, limit);
     return paginatedProducts;
@@ -94,5 +99,6 @@ module.exports = {
     patchProductById,
     createProduct,
     refreshProduct,
-    getAllProducts
+    getAllProducts,
+    getProductsCreatedByUser
 }

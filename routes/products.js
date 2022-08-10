@@ -15,16 +15,21 @@ const { user } = require('../middlewares/role');
 
 router.get('/', async (req, res) => {
     try {
-        console.log(req.query.page);
-        console.log(req.query.limit);
-        const createdBy = req.query.createdBy;
         const page = parseInt(req.query.page);
         const limit = parseInt(req.query.limit);
         let paginatedResult = await productRepo.getPaginatedProducts(page, limit);
-        if (createdBy != null) {
-            paginatedResult = paginatedResult.filter(p => p.createdBy === createdBy);
-        }
         res.status(200).send(paginatedResult);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+});
+
+router.get('/createdBy/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        let products = await productRepo.getProductsCreatedByUser(userId);
+        res.status(200).send(products);
     }
     catch (error) {
         res.status(400).send({ error: error.message })
