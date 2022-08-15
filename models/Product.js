@@ -19,11 +19,15 @@ const productSchema = new mongoose.Schema({
     },
     subCategory: {
         type: String,
-        required: [true, "Please Select Main Category"]
+        required: [true, "Please Select Sub Category"]
     },
     city: {
         type: String,
         required: [true, "Enter City"]
+    },
+    contactPhone: {
+        type: String,
+        required: [true, "Enter Contact Phone"]
     },
     productImages: {
         type: [String],

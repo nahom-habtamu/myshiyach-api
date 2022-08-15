@@ -45,6 +45,7 @@ const mapRequestToProduct = (requestBody, createdBy) => {
         mainCategory: requestBody.mainCategory,
         subCategory: requestBody.subCategory,
         city: requestBody.city,
+        contactPhone: requestBody.contactPhone,
         productImages: requestBody.productImages,
         createdAt: createdAtTime(),
         refreshedAt: createdAtTime(),
