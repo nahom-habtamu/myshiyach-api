@@ -17,12 +17,12 @@ async function paginate(model, page, limit) {
         };
     }
     try {
-        var contentFromDb = await model.find().limit(limit).skip(startIndex);
-        contentFromDb.sort((a, b) => {
-            let da = new Date(a.refreshedAt),
-                db = new Date(b.refreshedAt);
-            return db - da;
-        });
+        const sort = { refreshedAt: -1 };
+        var contentFromDb = await model
+            .find()
+            .sort(sort)
+            .limit(limit)
+            .skip(startIndex);
         result.results = contentFromDb;
         return result;
     } catch (e) {
