@@ -17,7 +17,13 @@ async function paginate(model, page, limit) {
         };
     }
     try {
-        result.results = await model.find().limit(limit).skip(startIndex);
+        var contentFromDb = await model.find().limit(limit).skip(startIndex);
+        contentFromDb.sort((a, b) => {
+            let da = new Date(a.refreshedAt),
+                db = new Date(b.refreshedAt);
+            return db - da;
+        });
+        result.results = contentFromDb;
         return result;
     } catch (e) {
         res.status(500).json({ message: e.message });
