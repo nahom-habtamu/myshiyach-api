@@ -15,9 +15,22 @@ const { user } = require('../middlewares/role');
 
 router.get('/', async (req, res) => {
     try {
-        const page = parseInt(req.query.page);
-        const limit = parseInt(req.query.limit);
-        let paginatedResult = await productRepo.getPaginatedProducts(page, limit);
+        let result = await productRepo.getAllProducts();
+        res.status(200).send(result);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+});
+
+router.post('/', async (req, res) => {
+    try {
+        const page = parseInt(req.body.page);
+        const limit = parseInt(req.body.limit);
+        const filterCriteria = req.body.filterCriteria;
+
+        let paginatedResult =
+            await productRepo.getPaginatedProducts(page, limit, filterCriteria);
         res.status(200).send(paginatedResult);
     }
     catch (error) {

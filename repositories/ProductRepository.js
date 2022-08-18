@@ -13,8 +13,8 @@ const getProductsCreatedByUser = async (userId) => {
     return products;
 }
 
-const getPaginatedProducts = async (page, limit) => {
-    let paginatedProducts = paginate(Product, page, limit);
+const getPaginatedProducts = async (page, limit, filterCriteria) => {
+    let paginatedProducts = paginate(Product, page, limit, filterCriteria);
     return paginatedProducts;
 }
 
