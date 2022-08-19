@@ -61,7 +61,7 @@ async function paginate(model, page, limit, filterCriteria) {
                 filterCriteria.brand != null &&
                 filterCriteria.brand.length > 0
             ) {
-                filteringObjectToPassToFind["brand"] =
+                filteringObjectToPassToFind["productDetail"]["brand"] =
                     filterCriteria.brand
             }
 

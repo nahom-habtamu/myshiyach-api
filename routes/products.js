@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/getPaginated', async (req, res) => {
     try {
         const page = parseInt(req.body.page);
         const limit = parseInt(req.body.limit);
