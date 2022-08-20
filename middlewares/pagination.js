@@ -6,19 +6,13 @@ async function paginate(model, page, limit, filterCriteria) {
     const endIndex = page * limit;
 
     const result = {};
-    const documentsCount = await model.countDocuments().exec();
-    if (endIndex < documentsCount) {
-        result.next = {
-            page: page + 1,
-            limit: limit,
-        };
-    }
     if (startIndex > 0) {
         result.previous = {
             page: page - 1,
             limit: limit,
         };
     }
+
     try {
         let sort = { refreshedAt: -1 };
         let filteringObjectToPassToFind = {};
@@ -86,17 +80,30 @@ async function paginate(model, page, limit, filterCriteria) {
             }
         }
 
-        let contentFromDb = await model.aggregate([
-            {
-                '$match': {
-                    ...filteringObjectToPassToFind,
-                },
-            },
-            { '$skip': startIndex, },
-            { '$limit': limit },
-            { '$sort': sort }
-        ]);
+        let contentFromDb = await getFilteredAndPaginatedItems(
+            model,
+            filteringObjectToPassToFind,
+            startIndex,
+            limit,
+            sort
+        );
 
+        const documents = await getFilteredAndPaginatedItemsWithOutLimit(
+            model,
+            filteringObjectToPassToFind,
+            startIndex,
+            sort
+        );
+
+        console.log(documents.length);
+        console.log(endIndex);
+
+        if (endIndex < documents.length) {
+            result.next = {
+                page: page + 1,
+                limit: limit,
+            };
+        }
         result.results = contentFromDb;
         return result;
 
@@ -105,4 +112,35 @@ async function paginate(model, page, limit, filterCriteria) {
     }
 }
 
+async function getFilteredAndPaginatedItemsWithOutLimit(
+    model, filteringObjectToPassToFind, startIndex, sort
+) {
+    return await model.aggregate([
+        {
+            '$match': {
+                ...filteringObjectToPassToFind,
+            },
+        },
+        { '$skip': startIndex, },
+        { '$sort': sort }
+    ]);
+}
+
+
+async function getFilteredAndPaginatedItems(
+    model, filteringObjectToPassToFind, startIndex, limit, sort
+) {
+    return await model.aggregate([
+        {
+            '$match': {
+                ...filteringObjectToPassToFind,
+            },
+        },
+        { '$skip': startIndex, },
+        { '$limit': limit },
+        { '$sort': sort }
+    ]);
+}
+
 module.exports = paginate;
+
