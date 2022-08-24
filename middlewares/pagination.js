@@ -15,9 +15,10 @@ async function paginate(model, page, limit, filterCriteria) {
 
     try {
         let sort = { refreshedAt: -1 };
-        let filteringObjectToPassToFind = {};
+        let filteringObjectToPassToFind = null;
 
         if (filterCriteria != null) {
+            filteringObjectToPassToFind = {};
             if (
                 filterCriteria.maxPrice != 0.0 &&
                 filterCriteria.maxPrice != null
@@ -81,11 +82,8 @@ async function paginate(model, page, limit, filterCriteria) {
         }
 
         let contentFromDb = await getFilteredAndPaginatedItems(
-            model,
-            filteringObjectToPassToFind,
-            startIndex,
-            limit,
-            sort
+            model, filteringObjectToPassToFind,
+            startIndex, limit, sort
         );
 
         const documents = await getFilteredAndPaginatedItemsWithOutLimit(
@@ -94,11 +92,7 @@ async function paginate(model, page, limit, filterCriteria) {
             startIndex,
             sort
         );
-
-        console.log(documents.length);
-        console.log(endIndex);
-
-        if (endIndex < documents.length) {
+        if (endIndex < documents.length + startIndex) {
             result.next = {
                 page: page + 1,
                 limit: limit,
@@ -115,14 +109,18 @@ async function paginate(model, page, limit, filterCriteria) {
 async function getFilteredAndPaginatedItemsWithOutLimit(
     model, filteringObjectToPassToFind, startIndex, sort
 ) {
+    if (!filteringObjectToPassToFind) {
+        return await model.find().sort(sort).skip(startIndex);
+    }
+
     return await model.aggregate([
         {
             '$match': {
                 ...filteringObjectToPassToFind,
             },
         },
+        { '$sort': sort },
         { '$skip': startIndex, },
-        { '$sort': sort }
     ]);
 }
 
@@ -130,15 +128,19 @@ async function getFilteredAndPaginatedItemsWithOutLimit(
 async function getFilteredAndPaginatedItems(
     model, filteringObjectToPassToFind, startIndex, limit, sort
 ) {
+    if (!filteringObjectToPassToFind) {
+        return await model.find().sort(sort).limit(limit).skip(startIndex);
+    }
+
     return await model.aggregate([
         {
             '$match': {
                 ...filteringObjectToPassToFind,
             },
         },
+        { '$sort': sort },
         { '$skip': startIndex, },
         { '$limit': limit },
-        { '$sort': sort }
     ]);
 }
 
