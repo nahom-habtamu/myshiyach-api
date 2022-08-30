@@ -68,7 +68,7 @@ const patchProductById = async (id, product) => {
         price: product.price ?? productInDb.price,
         mainCategory: product.mainCategory ?? productInDb.mainCategory,
         subCategory: product.subCategory ?? productInDb.subCategory,
-        refreshedAt: productInDb.refreshedAt,
+        refreshedAt: refreshedAtTime(),
         createdAt: productInDb.createdAt,
         createdBy: productInDb.createdBy,
         city: product.city ?? productInDb.city,
