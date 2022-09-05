@@ -17,7 +17,9 @@
     "express": "^4.17.3",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.3.0"
+    "mongoose": "^6.3.0",
+    "node-schedule": "^2.1.0",
+    "toad-scheduler": "^1.6.1"
   },
   "engines": {
     "node": "14.x"
