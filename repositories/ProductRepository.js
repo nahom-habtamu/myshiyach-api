@@ -48,6 +48,28 @@ const refreshProduct = async (id) => {
     return updatedProduct;
 }
 
+const updateProductRefreshedAtByConstantTime = async (id) => {
+    let productInDb = await getProductById(id);
+    if (!productInDb) {
+        throw new Error("Product Not Found");
+    }
+    let updatedRefreshedAt = addHours(6, new Date(productInDb.refreshedAt));
+    let convertedToLocalDate = updatedRefreshedAt.toLocaleString(
+        'en-US', { timeZone: 'Africa/Addis_Ababa' }
+    );
+    const updatedProduct = await Product.findByIdAndUpdate(
+        id, {
+        ...productInDb._doc,
+        refreshedAt: convertedToLocalDate
+    }, { new: true }).exec();
+    return updatedProduct;
+}
+
+function addHours(numOfHours, date) {
+    date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+    return date;
+}
+
 const updateProductById = async (id, product) => {
     const updatedProduct = await Product.findByIdAndUpdate(
         id, {
@@ -101,5 +123,6 @@ module.exports = {
     createProduct,
     refreshProduct,
     getAllProducts,
-    getProductsCreatedByUser
+    getProductsCreatedByUser,
+    updateProductRefreshedAtByConstantTime
 }
