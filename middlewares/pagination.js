@@ -17,6 +17,7 @@ async function paginate(model, page, limit, filterCriteria) {
         let sort = { refreshedAt: -1 };
         let filteringObjectToPassToFind = null;
 
+
         if (filterCriteria != null) {
             filteringObjectToPassToFind = {};
             if (
@@ -79,6 +80,12 @@ async function paginate(model, page, limit, filterCriteria) {
                 sort = {
                     refreshedAt: filterCriteria.sortByCreatedByAscending ? 1 : -1
                 }
+            }
+
+            if (filterCriteria.keyword != null) {
+                filteringObjectToPassToFind["description"] = {
+                    $regex: new RegExp(filterCriteria.keyword)
+                };
             }
         }
 
