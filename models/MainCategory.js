@@ -15,6 +15,7 @@ const mainCategorySchema = new mongoose.Schema({
     requiredFields: {
         type: [
             {
+                title: String,
                 objectKey: String,
                 isDropDown: Boolean,
                 dropDownValues: [String]
