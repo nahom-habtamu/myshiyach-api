@@ -52,18 +52,6 @@ async function paginate(model, page, limit, filterCriteria) {
                 filteringObjectToPassToFind["subCategory"] =
                     filterCriteria.subCategory
             }
-
-            if (
-                filterCriteria.brand != null &&
-                filterCriteria.brand.length > 0
-            ) {
-                filteringObjectToPassToFind["productDetail"] = {
-                    brand: {
-                        value: filterCriteria.brand
-                    }
-                }
-            }
-
             if (
                 filterCriteria.city != null &&
                 filterCriteria.city.length > 0
@@ -102,6 +90,12 @@ async function paginate(model, page, limit, filterCriteria) {
             startIndex,
             sort
         );
+
+        if (filterCriteria.brand != null &&
+            filterCriteria.brand.length > 0) {
+            contentFromDb = contentFromDb.filter(d => d?.productDetail?.brand?.value === filterCriteria.brand)
+        }
+
         if (endIndex < documents.length + startIndex) {
             result.next = {
                 page: page + 1,
