@@ -91,7 +91,7 @@ async function paginate(model, page, limit, filterCriteria) {
             sort
         );
 
-        if (filterCriteria.brand != null &&
+        if (filterCriteria?.brand != null &&
             filterCriteria.brand.length > 0) {
             contentFromDb = contentFromDb.filter(d => d?.productDetail?.brand?.value === filterCriteria.brand)
         }
