@@ -109,9 +109,16 @@ const createProduct = async (product) => {
     const productToCreate = new Product({
         ...product
     });
-
     const response = await productToCreate.save();
     return response;
+}
+
+const reportProduct = async (id) => {
+    let productInDb = await getProductById(id);
+    const reportedProduct = await Product.findByIdAndUpdate(
+        id, { ...productInDb._doc, isReported: true }, { new: true }
+    ).exec();
+    return reportedProduct;
 }
 
 module.exports = {
@@ -124,5 +131,6 @@ module.exports = {
     refreshProduct,
     getAllProducts,
     getProductsCreatedByUser,
-    updateProductRefreshedAtByConstantTime
+    updateProductRefreshedAtByConstantTime,
+    reportProduct
 }

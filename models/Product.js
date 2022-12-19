@@ -45,7 +45,11 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please Enter ID of user who created the product"]
     },
-    productDetail: {}
+    productDetail: {},
+    isReported: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const Product = new mongoose.model('Product', productSchema);

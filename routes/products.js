@@ -141,4 +141,17 @@ router.patch('/refresh/:id', async (req, res) => {
     }
 });
 
+router.post('/report/:id', async (req, res) => {
+    try {
+        let productId = req.params.id;
+        let reportedProduct = await productRepo.reportProduct(
+            productId
+        );
+        res.status(202).send(reportedProduct);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
 module.exports = router;
