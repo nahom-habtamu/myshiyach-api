@@ -118,4 +118,15 @@ router.post('/report/:id', [auth], async (req, res) => {
     }
 });
 
+router.post('/unreport/:id', [auth], async (req, res) => {
+    try {
+        let userId = req.params.id;
+        let reportedUser = await userRepo.unReportUser(userId);
+        res.status(202).send(reportedUser);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
 module.exports = router;

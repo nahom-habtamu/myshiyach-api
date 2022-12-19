@@ -121,6 +121,14 @@ const reportProduct = async (id) => {
     return reportedProduct;
 }
 
+const unReportProduct = async (id) => {
+    let productInDb = await getProductById(id);
+    const reportedProduct = await Product.findByIdAndUpdate(
+        id, { ...productInDb._doc, isReported: false }, { new: true }
+    ).exec();
+    return reportedProduct;
+}
+
 module.exports = {
     getPaginatedProducts,
     getProductById,
@@ -132,5 +140,6 @@ module.exports = {
     getAllProducts,
     getProductsCreatedByUser,
     updateProductRefreshedAtByConstantTime,
-    reportProduct
+    reportProduct,
+    unReportProduct
 }

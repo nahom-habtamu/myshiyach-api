@@ -27,7 +27,7 @@ const changeUserPassword = async ({ phoneNumber, password }) => {
 
 const getUserById = async (id) => {
     let user = await User.findById(id)
-        .select("_id phoneNumber email fullName")
+        .select("_id phoneNumber email fullName isReported")
         .exec();
     if (!user) {
         throw new Error("User Not Found")
@@ -47,7 +47,7 @@ const updateUserById = async (id, user) => {
     const updatedUser = await User.findByIdAndUpdate(
         id, { ...user },
         { new: true }
-    ).select("_id phoneNumber email fullName").exec();
+    ).select("_id phoneNumber email fullName isReported").exec();
     return updatedUser;
 }
 
@@ -61,7 +61,7 @@ const patchUserById = async (id, user) => {
         phoneNumber: user.phoneNumber ?? userInDb.phoneNumber,
     },
         { new: true }
-    ).select("_id phoneNumber email fullName").exec();
+    ).select("_id phoneNumber email fullName isReported").exec();
     return patchedUser;
 }
 
@@ -69,7 +69,15 @@ const reportUser = async (id) => {
     let userInDb = await getUserById(id);
     const reportedUser = await User.findByIdAndUpdate(
         id, { ...userInDb._doc, isReported: true }, { new: true }
-    ).select("_id phoneNumber email fullName").exec();
+    ).select("_id phoneNumber email fullName isReported").exec();
+    return reportedUser;
+}
+
+const unReportUser = async (id) => {
+    let userInDb = await getUserById(id);
+    const reportedUser = await User.findByIdAndUpdate(
+        id, { ...userInDb._doc, isReported: false }, { new: true }
+    ).select("_id phoneNumber email fullName isReported").exec();
     return reportedUser;
 }
 
@@ -90,6 +98,7 @@ module.exports = {
     getAllUsers,
     getUserById,
     reportUser,
+    unReportUser,
     createUser,
     deleteUserById,
     updateUserById,
