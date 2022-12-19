@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         required: [true, "Enter Your Phone Number"],
+    },
+    isReported: {
+        type: Boolean,
+        default: false
     }
 });
 

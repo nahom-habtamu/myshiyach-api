@@ -107,4 +107,15 @@ router.patch('/:id', [auth], async (req, res) => {
     }
 });
 
+router.post('/report/:id', [auth], async (req, res) => {
+    try {
+        let userId = req.params.id;
+        let reportedUser = await userRepo.reportUser(userId);
+        res.status(202).send(reportedUser);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
 module.exports = router;

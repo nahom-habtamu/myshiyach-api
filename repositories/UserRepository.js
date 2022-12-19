@@ -65,6 +65,14 @@ const patchUserById = async (id, user) => {
     return patchedUser;
 }
 
+const reportUser = async (id) => {
+    let userInDb = await getUserById(id);
+    const reportedUser = await User.findByIdAndUpdate(
+        id, { ...userInDb._doc, isReported: true }, { new: true }
+    ).select("_id phoneNumber email fullName").exec();
+    return reportedUser;
+}
+
 const createUser = async (user) => {
 
     const salt = await bcrypt.genSalt(10);
@@ -78,14 +86,14 @@ const createUser = async (user) => {
     return hiddenPassword;
 }
 
-
 module.exports = {
     getAllUsers,
     getUserById,
+    reportUser,
     createUser,
     deleteUserById,
     updateUserById,
     patchUserById,
     getUserByUsername,
-    changeUserPassword
+    changeUserPassword,
 }
