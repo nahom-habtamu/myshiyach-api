@@ -6,7 +6,7 @@ const getAllUsers = async () => {
     return users;
 }
 
-const getUserByUsername = async ({ userName }) => {
+const getUserByUsername = async (userName) => {
     let user = await User.findOne({
         phoneNumber: userName
     });

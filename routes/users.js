@@ -35,6 +35,18 @@ router.get('/:id', [auth], async (req, res) => {
     }
 });
 
+router.get('/username/:username', async (req, res) => {
+    try {
+
+        let username = req.params.username;
+        let user = await userRepo.getUserByUsername(username);
+        res.status(200).send(user);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+}); 
+
 router.post('/changePassword', async (req, res) => {
     try {
         const { error } =
