@@ -4,7 +4,7 @@ const { getAdminByUsernameAndPassword } = require('./AdminRepository');
 const { getUserByUsername } = require('./UserRepository');
 
 const findUserAndGenerateToken = async (authRequest) => {
-    const user = await getUserByUsername(authRequest.phoneNumber);
+    const user = await getUserByUsername(authRequest.userName);
     const admin = await getAdminByUsernameAndPassword(authRequest);
     if (admin == null && user != null) {
         const checkedPassword = await bcrypt.compare(
