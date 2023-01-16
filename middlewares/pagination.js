@@ -66,16 +66,8 @@ async function paginate(model, page, limit, filterCriteria) {
                 }
             }
 
-            if (filterCriteria.sortByCreatedByAscending != null) {
-                sort = {
-                    refreshedAt: filterCriteria.sortByCreatedByAscending ? 1 : -1
-                }
-            }
-
-            if (filterCriteria.keyword != null) {
-                filteringObjectToPassToFind["description"] = {
-                    $regex: new RegExp(filterCriteria.keyword)
-                };
+            sort = {
+                refreshedAt: !filterCriteria.sortByCreatedByAscending ? -1 : 1
             }
         }
 
@@ -94,6 +86,13 @@ async function paginate(model, page, limit, filterCriteria) {
         if (filterCriteria?.brand != null &&
             filterCriteria.brand.length > 0) {
             contentFromDb = contentFromDb.filter(d => d?.productDetail?.brand?.value === filterCriteria.brand)
+        }
+
+        if (filterCriteria.keyword != null && filterCriteria.keyword.length > 0) {
+            contentFromDb = contentFromDb.filter(d =>
+                d.title.toLowerCase().includes(filterCriteria.keyword.toLowerCase()) ||
+                d.description.toLowerCase().includes(filterCriteria.keyword.toLowerCase())
+            );
         }
 
         if (endIndex < documents.length + startIndex) {
@@ -137,16 +136,15 @@ async function getFilteredAndPaginatedItems(
     }
 
     return await model.aggregate([
+        { '$sort': sort },
         {
             '$match': {
                 ...filteringObjectToPassToFind,
             },
         },
-        { '$sort': sort },
         { '$skip': startIndex, },
         { '$limit': limit },
     ]);
 }
 
 module.exports = paginate;
-
