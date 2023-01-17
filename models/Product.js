@@ -34,11 +34,11 @@ const productSchema = new mongoose.Schema({
         required: [true, "Enter Images For Product"]
     },
     createdAt: {
-        type: String,
+        type: Date,
         required: [true, "Please Enter The Time Product was created"]
     },
     refreshedAt: {
-        type: String,
+        type: Date,
         required: [true, "Please Enter The Time Product was refreshed"]
     },
     createdBy: {
