@@ -67,7 +67,7 @@ async function paginate(model, page, limit, filterCriteria) {
             }
 
             sort = {
-                refreshedAt: !filterCriteria.sortByCreatedByAscending ? -1 : 1
+                refreshedAt: filterCriteria.sortByCreatedByAscending ? -1 : 1
             }
         }
 
