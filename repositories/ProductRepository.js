@@ -5,15 +5,6 @@ const paginate = require('../middlewares/pagination');
 
 const getAllProducts = async () => {
     let products = await Product.find({});
-    for (let i = 0; i < products.length; i++) {
-        let element = products[i];
-        await Product.findByIdAndUpdate(
-            element._id, {
-            ...element._doc,
-            refreshedAt: refreshedAtTime(),
-            createdAt: refreshedAtTime(),
-        }, { new: true }).exec();
-    }
     return products;
 }
 
