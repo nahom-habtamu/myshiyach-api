@@ -88,7 +88,7 @@ async function paginate(model, page, limit, filterCriteria) {
             contentFromDb = contentFromDb.filter(d => d?.productDetail?.brand?.value === filterCriteria.brand)
         }
 
-        if (filterCriteria.keyword != null && filterCriteria.keyword.length > 0) {
+        if (filterCriteria?.keyword != null && filterCriteria.keyword.length > 0) {
             contentFromDb = contentFromDb.filter(d =>
                 d.title.toLowerCase().includes(filterCriteria.keyword.toLowerCase()) ||
                 d.description.toLowerCase().includes(filterCriteria.keyword.toLowerCase())
