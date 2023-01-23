@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
-const validatePhoneNumber = require("../utils/validatePhoneNumber");
 
 const { generateAuthToken } = require('../repositories/TokenRepository');
+
 const ROLES = require('../constants/Roles');
 
 const userSchema = new mongoose.Schema({
-
     fullName: {
         type: String,
         required: [true, "Enter Valid Name"],
@@ -28,6 +27,10 @@ const userSchema = new mongoose.Schema({
     isReported: {
         type: Boolean,
         default: false
+    },
+    favoriteProducts: {
+        type: [String],
+        default: []
     }
 });
 

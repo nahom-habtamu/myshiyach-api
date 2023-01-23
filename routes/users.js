@@ -45,7 +45,7 @@ router.get('/username/:username', async (req, res) => {
     catch (error) {
         res.status(400).send({ error: error.message })
     }
-}); 
+});
 
 router.post('/changePassword', async (req, res) => {
     try {
@@ -134,6 +134,18 @@ router.post('/unreport/:id', [auth], async (req, res) => {
     try {
         let userId = req.params.id;
         let reportedUser = await userRepo.unReportUser(userId);
+        res.status(202).send(reportedUser);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
+router.post('/updateFavoriteProducts/:id', [auth], async (req, res) => {
+    try {
+        let userId = req.params.id;
+        let favoriteProducts = req.body.favoriteProducts;
+        let reportedUser = await userRepo.updateFavoriteProducts(userId, favoriteProducts);
         res.status(202).send(reportedUser);
     }
     catch (error) {
