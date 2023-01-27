@@ -12,7 +12,7 @@ function scheduleRefresherJob() {
                     .updateProductRefreshedAtByConstantTime(product._id);
             }
         });
-    const job = new SimpleIntervalJob({ hours: 6 }, task);
+    const job = new SimpleIntervalJob({ days: 2 }, task);
     scheduler.addSimpleIntervalJob(job);
 }
 

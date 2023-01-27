@@ -53,7 +53,7 @@ const updateProductRefreshedAtByConstantTime = async (id) => {
     if (!productInDb) {
         throw new Error("Product Not Found");
     }
-    let updatedRefreshedAt = addHours(6, new Date(productInDb.refreshedAt));
+    let updatedRefreshedAt = addHours(24, new Date(productInDb.refreshedAt));
     let convertedToLocalDate = updatedRefreshedAt.toLocaleString(
         'en-US', { timeZone: 'Africa/Addis_Ababa' }
     );
