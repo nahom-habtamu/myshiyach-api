@@ -29,6 +29,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, "Enter Contact Phone"]
     },
+    contactName: {
+        type: String,
+        default: ""
+    },
     productImages: {
         type: [String],
         required: [true, "Enter Images For Product"]

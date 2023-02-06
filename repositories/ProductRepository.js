@@ -95,6 +95,7 @@ const patchProductById = async (id, product) => {
         createdBy: productInDb.createdBy,
         city: product.city ?? productInDb.city,
         contactPhone: product.contactPhone ?? productInDb.contactPhone,
+        contactName: product.contactName ?? productInDb.contactName,
         productImages: product.productImages ?? productInDb.productImages,
         productDetail: product.productDetail ?
             { ...product.productDetail } :
