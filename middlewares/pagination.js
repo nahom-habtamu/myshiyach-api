@@ -52,6 +52,15 @@ async function paginate(model, page, limit, filterCriteria) {
                 filteringObjectToPassToFind["subCategory"] =
                     filterCriteria.subCategory
             }
+
+            if (
+                filterCriteria.createdBy != null &&
+                filterCriteria.createdBy.length > 0
+            ) {
+                filteringObjectToPassToFind["createdBy"] =
+                    filterCriteria.createdBy
+            }
+
             if (
                 filterCriteria.city != null &&
                 filterCriteria.city.length > 0
