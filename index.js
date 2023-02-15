@@ -23,6 +23,8 @@ app.use('/api/products', products);
 app.use('/api/cities', cities);
 app.use('/api/auth', auth);
 
+app.use('/uploads', express.static('uploads'));
+
 // scheduleRefresherJob();
 
 const PORT = process.env.PORT ?? 5000;

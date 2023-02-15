@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const router = express.Router();
 
 const productRepo = require('../repositories/ProductRepository');
@@ -12,6 +13,10 @@ const {
 
 const auth = require('../middlewares/auth');
 const { user } = require('../middlewares/role');
+
+const upload = require('../multer/multerConfig');
+const { API_PATH } = require('../constants/api');
+
 
 router.get('/', async (req, res) => {
     try {
@@ -167,4 +172,21 @@ router.post('/unreport/:id', async (req, res) => {
     }
 });
 
+router.post('/uploadProductImage', upload.single('product-image'), async (req, res) => {
+    try {
+        if (req.file) {
+            if (req.error) {
+                throw new Error("invalid file type");
+            }
+            let fullPath = `${API_PATH + req.file.path}`;
+            res.status(202).send(fullPath);
+        }
+        else {
+            throw new Error("No File Found");
+        }
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
 module.exports = router;
