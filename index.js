@@ -16,14 +16,14 @@ const upload = require('./routes/upload');
 
 app.use(cors());
 app.use(express.json());
-app.use('/api/users', users);
-app.use('/api/mainCategories', mainCategories);
-app.use('/api/admins', admins);
-app.use('/api/subCategories', subCategories);
-app.use('/api/products', products);
-app.use('/api/cities', cities);
-app.use('/api/auth', auth);
-app.use('/api/upload', upload);
+app.use('/users', users);
+app.use('/mainCategories', mainCategories);
+app.use('/admins', admins);
+app.use('/subCategories', subCategories);
+app.use('/products', products);
+app.use('/cities', cities);
+app.use('/auth', auth);
+app.use('/upload', upload);
 
 app.use('/uploads', express.static('uploads'));
 
