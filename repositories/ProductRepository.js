@@ -130,6 +130,27 @@ const unReportProduct = async (id) => {
     return reportedProduct;
 }
 
+const updateProductsImages = async (oldUrl, newUrl) => {
+    let products = await Product.find({});
+    let updatedProductsIds = [];
+    for (let i = 0; i < products.length; i++) {
+        const product = products[i];
+        if(product.productImages.filter(i => i.includes(oldUrl)).length > 0){
+            const productImagesUpdated = product.productImages.map((i) => {
+                if (i.includes(oldUrl)) {
+                    return i.replace(oldUrl, newUrl)
+                }
+                return i;
+            });
+            updatedProductsIds.push(product._id);
+            await Product.findByIdAndUpdate(
+                product._id, { ...product._doc, productImages: productImagesUpdated }, { new: true }
+            ).exec();
+        }
+    }
+    return updatedProductsIds;
+}
+
 module.exports = {
     getPaginatedProducts,
     getProductById,
@@ -142,5 +163,6 @@ module.exports = {
     getProductsCreatedByUser,
     updateProductRefreshedAtByConstantTime,
     reportProduct,
-    unReportProduct
+    unReportProduct,
+    updateProductsImages
 }

@@ -13,13 +13,21 @@ const {
 const auth = require('../middlewares/auth');
 const { user } = require('../middlewares/role');
 
-const upload = require('../multer/multerConfig');
-const { API_PATH } = require('../constants/api');
-
-
 router.get('/', async (req, res) => {
     try {
         let result = await productRepo.getAllProducts();
+        res.status(200).send(result);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+});
+
+router.post('/updateProductImagesHost', async (req, res) => {
+    try {
+        const oldUrl = req.body.oldUrl;
+        const newUrl = req.body.newUrl;
+        let result = await productRepo.updateProductsImages(oldUrl, newUrl);
         res.status(200).send(result);
     }
     catch (error) {
