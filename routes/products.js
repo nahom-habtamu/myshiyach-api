@@ -23,6 +23,17 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.post('/getAllProductsWithListOfId', async (req, res) => {
+    try {
+        let listOfId = req.body.listOfId;
+        let result = await productRepo.getAllProductsWithListOfId(listOfId);
+        res.status(200).send(result);
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+});
+
 router.post('/updateProductImagesHost', async (req, res) => {
     try {
         const oldUrl = req.body.oldUrl;

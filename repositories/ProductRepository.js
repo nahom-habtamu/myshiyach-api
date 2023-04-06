@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 const { Product } = require('../models/Product');
 
 const refreshedAtTime = require('../utils/dateTimeUtil');
@@ -5,6 +7,12 @@ const paginate = require('../middlewares/pagination');
 
 const getAllProducts = async () => {
     let products = await Product.find({});
+    return products;
+}
+
+const getAllProductsWithListOfId = async (listOfId) => {
+    let listOfIdParsed = listOfId.map(l => mongoose.Types.ObjectId(l));
+    let products = await Product.find({ "_id": { "$in": listOfIdParsed } });
     return products;
 }
 
@@ -135,7 +143,7 @@ const updateProductsImages = async (oldUrl, newUrl) => {
     let updatedProductsIds = [];
     for (let i = 0; i < products.length; i++) {
         const product = products[i];
-        if(product.productImages.filter(i => i.includes(oldUrl)).length > 0){
+        if (product.productImages.filter(i => i.includes(oldUrl)).length > 0) {
             const productImagesUpdated = product.productImages.map((i) => {
                 if (i.includes(oldUrl)) {
                     return i.replace(oldUrl, newUrl)
@@ -164,5 +172,6 @@ module.exports = {
     updateProductRefreshedAtByConstantTime,
     reportProduct,
     unReportProduct,
-    updateProductsImages
+    updateProductsImages,
+    getAllProductsWithListOfId
 }
