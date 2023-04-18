@@ -24,7 +24,7 @@ router.get('/', [auth, admin], async (req, res) => {
     }
 });
 
-router.get('/:id', [auth], async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         let userId = req.params.id;
         let user = await userRepo.getUserById(userId);
